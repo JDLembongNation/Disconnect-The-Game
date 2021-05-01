@@ -2,6 +2,10 @@ public class BulletSystem{
   ArrayList<Bullet> bullets;
   PVector origin;
   
+  public BulletSystem(){
+    bullets = new ArrayList<Bullet>();  
+  }
+  
   void addBullet(Bullet bullet){
     bullets.add(bullet);
   }
@@ -15,13 +19,21 @@ public class BulletSystem{
     bullets.add(new Bullet(position, ratio, extend));
   }
   
-  void run(){
+  void run(Player player, int constraints){
     for(int i = 0; i< bullets.size(); i++){
       Bullet b = bullets.get(i);
       b.update();
+      b.displayRegularBullet();
+      if(inRegion(b.position, player.position, constraints)){
+        player.deductLife();
+      }
       if(b.isDead()){
         bullets.remove(b);
       }
     }
+  }
+  
+  boolean inRegion(PVector subject, PVector region, int regionSize){
+    return (subject.x > region.x && subject.x < region.x +regionSize && subject.y > region.y && subject.y < region.y + regionSize);
   }
 }

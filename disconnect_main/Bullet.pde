@@ -4,7 +4,7 @@ public class Bullet{
   PVector acceleration = new PVector(0,0); //DEFAULT
   PVector adder;
   boolean wait;
-  int life; //How many times can the bullet bounce off the wall, if the bullet is to die immediately after launching, set this to 1.
+  int life = 0; //How many times can the bullet bounce off the wall, if the bullet is to die immediately after launching, set this to 1.
   
   //Constructor for straight bullets. --> Firing in a predefined linear direction
   public Bullet(PVector position, PVector velocity, PVector acceleration){
@@ -22,6 +22,17 @@ public class Bullet{
     position.add(adder);
     velocity = adder.copy();
     velocity.normalize();
+  }
+  
+   public Bullet(PVector pos, float theta, float extend, float multiplier){
+    velocity = new PVector(0, 0);
+    position = pos.copy();
+    adder =new PVector(sin(theta), cos(theta));
+    adder.mult(extend);
+    position.add(adder);
+    velocity = adder.copy();
+    velocity.normalize();
+    velocity.mult(multiplier);
   }
   
     //Constructor for bullets forming from pattern, but flowing in straight line from origin. Rotating around an individual. 

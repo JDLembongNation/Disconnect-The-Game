@@ -8,6 +8,7 @@ PImage mainCharacter[];
   float timers[];
   int iterators[];
 boolean keys[];
+       Battle b;
 void setup() {
   size(600,600);
   keys = new boolean[5];
@@ -26,18 +27,24 @@ void setup() {
     mainCharacter[i] = loadImage("./data/characters/"+i+".png");
   }
   openingBG = loadImage("./data/opening-bg/cyberpunk-street.png");
-   timers = new float[6];
+   timers = new float[7];
     iterators = new int[7];
     scene = 0;
+    b = new Battle();
+   b.initialize(new Player(), new Boss_Chapter_1(null, new PVector(300,200), 2,100));
 }
 
 void draw(){  
+  background(0);
+  /*
    if(!rpg.isSceneFinished){
      rpg.execScene(scene);
    }else{
      scene++;
      rpg.isSceneFinished=false;
    }
+   */
+   b.run();
 }
 
 void keyPressed(){
