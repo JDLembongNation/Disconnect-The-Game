@@ -1,5 +1,6 @@
 PFont font;
 RPG rpg;
+int scene;
 PImage openingBG;
 PImage forestBackground[];
 PImage rpgBackground[];
@@ -27,10 +28,16 @@ void setup() {
   openingBG = loadImage("./data/opening-bg/cyberpunk-street.png");
    timers = new float[6];
     iterators = new int[7];
+    scene = 0;
 }
 
 void draw(){  
-   rpg.execScene(1);
+   if(!rpg.isSceneFinished){
+     rpg.execScene(scene);
+   }else{
+     scene++;
+     rpg.isSceneFinished=false;
+   }
 }
 
 void keyPressed(){

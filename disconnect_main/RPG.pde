@@ -3,7 +3,7 @@ public class RPG {
   ArrayList<Scene> scenes;
   boolean isRPGActive;
   boolean isCityEventFinished;
-  boolean isOpeningFinished;
+  boolean isSceneFinished;
   
   boolean showNextText;
   float timeStamp;
@@ -66,7 +66,7 @@ public class RPG {
   //Have a separate function call for opening scene as there are a lot of cutscenes. 
   //Will follow an FSM. 
   private void execOpening() {
-    if(!isOpeningFinished){
+    if(!isSceneFinished){
       if(!isCityEventFinished)
         cityEvent();
       else 
@@ -98,7 +98,7 @@ public class RPG {
     showTextBox(event.text[iterators[6]]);
     if(showNextText){
       if(iterators[6] == maxTextSlot-1){
-        isOpeningFinished=true;
+        isSceneFinished=true;
       }
       else if (iterators[6] < maxTextSlot-1) {
         iterators[6] +=1;
