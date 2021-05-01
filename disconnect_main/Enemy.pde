@@ -1,4 +1,12 @@
 public abstract class Enemy{
   PImage character;
-  //Method: Invoke Spellcards. (enemy position, bullet type,)
+  int spellCards;
+  float health;
+  PVector position;
+  
+  //Method: Invoke Spellcards. (enemy position)
+  
+  void run(){
+    
+  }
 }

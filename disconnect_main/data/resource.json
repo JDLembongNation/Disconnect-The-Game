@@ -10,21 +10,47 @@
                      "eventID":0,
                      "triggerID":0,
                      "text":[
-                         "11:48 PM...",
-                         "Don't forget to send the final email draft to Mr Yamamoto for tonight.",
-                         "I'll grab a snack at the convenience store before I head home.",
-                         "Did I forward the correct documents to the team after the meeting?",
+                         "7:48 PM...",
+                         "(Don't forget to send the final email draft to Mr Yamamoto for tonight.)",
+                         "(I'll grab a snack at the convenience store before I head home.)",
+                         "(Did I forward the correct documents to the team after the meeting?)",
                          "...",
-                         "I'll check when I get home.",
-                         "Oh dear, how long have I had Ode to Joy on repeat?",
-                         "(It's been playing over 5 times on repeat now)",
-                         "",
-                         "",
-                         "",
-                         "",
-                         ""
+                         "(I'll check when I get home.)",
+                         "(Oh dear, how long have I had this song on repeat?)",
+                         "*It's been playing over 5 times on repeat now*",
+                         "...",
+                         "(That’s odd. I swear I left the train station at 11)",
+                         "(Why is it taking so long to get home)",
+                         "(Wait...)",
+                         "(When was the last time we even stopped?)",
+                         "(I thought the train track wasn't even supposed to be this long)",
+                        "Press SPACE to continue"
                      ]
-                }
+                },
+                {
+                    "eventID":1,
+                    "triggerID":0,
+                    "text":[
+                        "8:14 PM...",
+                        "(We're completely out of the city now..)",
+                        "(How on earth? My phone doesn't have any signal anymore!)",
+                        "(It's been an hour already! Why haven't we stopped?)",
+                        "(Everyone seems to be asleep on the train)",
+                        "(What do I do?!)",
+                        "*Train is now approaching Kisaragi Station*",
+                        "(Kisaragi station? Huh?)",
+                        "*I've never heard of that station in my life)",
+                        "(I swear the station doesn’t even exist.)",
+                        "(What's going on?...)",
+                        "(Did I go too far?)",
+                        "(I better get out of the train, there’s no way I'm on the right train.)",
+                        "*Train Stops*",
+                        "(All the passengers are asleep...)",
+                        "(In fact, all of the passengers on the train are asleep.)",
+                        "(It is quite late after all)",
+                        "(I hope they don’t miss their train stop)"
+                    ]
+               }
             ],
             "map":{
 
@@ -42,10 +68,61 @@
 
             ],
             "map":{
-
+                "difficulty":1
             },
             "npc":{
+                "storyCharacters":[
+                    {
+                        "name":"Monk Ji Gong",
+                        "event":[{
+                            "number":0,
+                            "text":[
 
+                            ]
+                        },
+                        {
+                            "number":1,
+                            "text":[
+
+                            ]
+                        }
+                    ]
+                    },
+                    {
+                        
+                    }
+                ],
+                "sideCharacters":[
+                    {
+                        "name":"Stranger",
+                        "text":["I can’t really remember how I got here. As the old saying goes…"]
+                    },
+                    {
+                        "name":"Stranger",
+                        "text":["I’ve lost my dog at the park earlier today, can you help me find her?"]
+                    },
+                    {
+                        "name":"Stranger",
+                        "text":["…"]
+                    },
+                    {
+                        "name":"Stranger",
+                        "text":["Get 10 for the price of 5 chop-chop! Sales going down fast!"]
+                    },
+                    {
+                        "name":"Stranger",
+                        "text":["I think I’ll put some more stocks in this firm because..."]
+                    },
+                    {
+                        "name":"Stranger",
+                        "text":["Leave me alone, I need to practice.",
+                                "My boss is going to freak if I mess this presentation up."]
+                    },
+                    {
+                        "name":"Stranger",
+                        "text":["I can’t really think of anything, let alone say anything meaningful."]
+                    }
+                ]    
             },
             "sceneFSM":{
 
