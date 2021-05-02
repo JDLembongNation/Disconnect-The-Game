@@ -5,6 +5,7 @@ PImage openingBG;
 PImage forestBackground[];
 PImage rpgBackground[];
 PImage mainCharacter[];
+PImage battleImages[];
 float timers[];
 int iterators[];
 boolean keys[];
@@ -15,23 +16,25 @@ void setup() {
   font = createFont("monogram.ttf", 30);
   rpg = new RPG(loadJSONObject("./data/resource.json"));
   forestBackground = new PImage[5];
-  rpgBackground = new PImage[3];
+  rpgBackground = new PImage[4];
   mainCharacter = new PImage[4];
   for(int i = 0; i < 5; i++){
     forestBackground[i] = loadImage("./data/opening-bg/"+i+".png");
   }
-  for(int i = 0; i < 3; i++){
+  for(int i = 0; i < 4; i++){
     rpgBackground[i] = loadImage("./data/background/"+i+".png");
   }
   for(int i = 0; i < 4; i++){
     mainCharacter[i] = loadImage("./data/characters/"+i+".png");
   }
   openingBG = loadImage("./data/opening-bg/cyberpunk-street.png");
-   timers = new float[8];
+  battleImages = new PImage[1];
+  battleImages[0] = loadImage("./data/battle/bg-1.png");
+   timers = new float[13];
     iterators = new int[7];
     scene = 0;
     b = new Battle();
-   b.initialize(new Player(), new Boss_Chapter_1(null, new PVector(300,200), 2,100));
+   b.initialize(new Player(3), new Boss_Chapter_1(null, new PVector(300,200), 2,100));
 }
 
 void draw(){  
@@ -39,12 +42,13 @@ void draw(){
   
    if(!rpg.isSceneFinished){
      rpg.execScene(scene);
+     
    }else{
      scene++;
      rpg.isSceneFinished=false;
    }
    
-   //b.run();
+  // b.run();
 }
 
 void keyPressed(){

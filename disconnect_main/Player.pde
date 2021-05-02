@@ -1,8 +1,10 @@
 public class Player{
   PVector position;
   boolean isDead;
-  public Player(){
+  int lives;
+  public Player(int lives){
      position = new PVector(300,550);
+     this.lives = lives;
   }
   void run(BulletSystem bs){
     if(keys[0]){
@@ -33,8 +35,11 @@ public class Player{
   }
   void deductLife(){ //make player temporarily invincible so they have chance to regain.
     if(millis() > timers[6]){
-      System.out.println("DEDUCTED LIFE");
+      lives--;
       timers[6]+=millis()+100;
+      if(lives <=0){
+        //GAME OVER. CALL. 
+      }
     }
   }
 }

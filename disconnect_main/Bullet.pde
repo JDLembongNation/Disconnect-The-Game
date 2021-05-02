@@ -54,9 +54,16 @@ public class Bullet{
     wait = false;
   }
   
+  public void setLife(int life){this.life = life;}
+  
   public void displayRegularBullet(){
     stroke(255);
     fill(255);
+    ellipse(position.x, position.y, 8, 8);
+  }
+   public void displayRegularBullet(int alpha){
+    stroke(255);
+    fill(255, alpha);
     ellipse(position.x, position.y, 8, 8);
   }
   public void setToPlayerBullet(){isPlayerBullet = true;}

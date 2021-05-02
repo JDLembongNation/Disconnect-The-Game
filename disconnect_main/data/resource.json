@@ -68,7 +68,49 @@
 
             ],
             "map":{
-                "difficulty":1
+                "difficulty":1,
+                "objects":[{
+                    "id":1,
+                    "width":90,
+                    "height":120,
+                    "isWalkable":false,
+                    "isInteractable":false
+                },
+                 {
+                     "id":2,
+                     "width":60,
+                     "height":90,
+                     "isWalkable":false,
+                     "isInteractable":false
+                },
+                {
+                    "id":3,
+                    "width":30,
+                    "height":30,
+                    "isWalkable":true,
+                    "isInteractable":false
+                },
+                {
+                    "id":4,
+                    "width":30,
+                    "height":30,
+                    "isWalkable":true,
+                    "isInteractable":false
+                },
+                {
+                    "id":5,
+                    "width":30,
+                    "height":30,
+                    "isWalkable":false,
+                    "isInteractable":true
+                },{
+                    "id":6,
+                    "width":30,
+                    "height":30,
+                    "isWalkable":false,
+                    "isInteractable":false
+                }
+            ]
             },
             "npc":{
                 "storyCharacters":[

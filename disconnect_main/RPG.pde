@@ -109,8 +109,11 @@ public class RPG {
 
   private void showCityBackground() {
     image(openingBG, -iterators[CITY_ITERATOR], 0);
-    iterators[CITY_ITERATOR]++;
-    if (iterators[CITY_ITERATOR] > 1100) iterators[CITY_ITERATOR] = 0;
+    if(millis() > timers[12]){
+      iterators[CITY_ITERATOR]++;
+      if (iterators[CITY_ITERATOR] > 1100) iterators[CITY_ITERATOR] = 0;
+      timers[12] = millis()+30;  
+    }
   }
 
   private void showForestBackground() {

@@ -48,6 +48,7 @@ public class Map{
      //hard code for now. 
      spawnFloor(0);
      renderCharacter();
+     spawnItems();
    }
    
    TriggerEvent playerInteract(){
@@ -75,6 +76,10 @@ public class Map{
       }
    }
    
+   void generateNodes(){
+     
+   }
+   
    void spawnFloor(int floorType){
      for(int i = 0; i < width; i+=unitLength){
        for(int j = 0; j < height; j+=unitLength){
@@ -84,7 +89,24 @@ public class Map{
    }
    void renderCharacter(){
      image(mainCharacter[currentPosition], playerPosition.x, playerPosition.y);
-     
+   }
+   void spawnItems(){
+     image(rpgBackground[1],200,300);
+     image(rpgBackground[1],290,300);
+     image(rpgBackground[1],380,300);
+     image(rpgBackground[1],470,300);
+     for(int i = 0; i < width; i+=unitLength*2){
+       image(rpgBackground[2],i,0);
+       image(rpgBackground[2],i,540);
+     }
+     for(int i = 0; i < height; i+=unitLength*2){
+       image(rpgBackground[2],0,i);
+       image(rpgBackground[2],540,i);
+     }
+     image(rpgBackground[3],90,90);
+     image(rpgBackground[3],150,150);
+     image(rpgBackground[3],90,120);
+     image(rpgBackground[3],150,180);
    }
    
 }

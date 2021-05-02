@@ -5,7 +5,7 @@ public abstract class Enemy{
   float maxHealth;
   PVector position;
   int lives;
-  
+  boolean inSpell;
   //Method: Invoke Spellcards. (enemy position)
   public Enemy(PImage character, PVector position, int lives, float health){
     this.character = character;
