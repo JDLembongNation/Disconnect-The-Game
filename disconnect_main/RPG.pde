@@ -142,7 +142,7 @@ public class RPG {
     if (millis() > timers[4]) {
       iterators[5]++;
       if (iterators[5] > 1400) iterators[5] = 0;
-      timers[4] = millis()+50;
+      timers[4] = millis()+2;
     }
   }
 

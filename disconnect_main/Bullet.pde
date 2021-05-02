@@ -4,6 +4,7 @@ public class Bullet{
   PVector acceleration = new PVector(0,0); //DEFAULT
   PVector adder;
   boolean wait;
+  boolean isPlayerBullet;
   int life = 0; //How many times can the bullet bounce off the wall, if the bullet is to die immediately after launching, set this to 1.
   
   //Constructor for straight bullets. --> Firing in a predefined linear direction
@@ -58,7 +59,7 @@ public class Bullet{
     fill(255);
     ellipse(position.x, position.y, 8, 8);
   }
-  
+  public void setToPlayerBullet(){isPlayerBullet = true;}
   public void update(){
     this.position.add(this.velocity.copy());
     this.velocity.add(this.acceleration.copy());

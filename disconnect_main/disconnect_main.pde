@@ -5,13 +5,13 @@ PImage openingBG;
 PImage forestBackground[];
 PImage rpgBackground[];
 PImage mainCharacter[];
-  float timers[];
-  int iterators[];
+float timers[];
+int iterators[];
 boolean keys[];
-       Battle b;
+Battle b;
 void setup() {
   size(600,600);
-  keys = new boolean[5];
+  keys = new boolean[6];
   font = createFont("monogram.ttf", 30);
   rpg = new RPG(loadJSONObject("./data/resource.json"));
   forestBackground = new PImage[5];
@@ -27,7 +27,7 @@ void setup() {
     mainCharacter[i] = loadImage("./data/characters/"+i+".png");
   }
   openingBG = loadImage("./data/opening-bg/cyberpunk-street.png");
-   timers = new float[7];
+   timers = new float[8];
     iterators = new int[7];
     scene = 0;
     b = new Battle();
@@ -36,15 +36,15 @@ void setup() {
 
 void draw(){  
   background(0);
-  /*
+  
    if(!rpg.isSceneFinished){
      rpg.execScene(scene);
    }else{
      scene++;
      rpg.isSceneFinished=false;
    }
-   */
-   b.run();
+   
+   //b.run();
 }
 
 void keyPressed(){
@@ -53,21 +53,24 @@ void keyPressed(){
      rpg.showNextText = true;
      //Does a relatively good job, but may need time stops. 
    }
-     if(keyCode == LEFT) keys[0] = true;
+     if(key == 'm') keys[4] = true;
+  }
+  if(b.isBattleActive) if(key == ' ') keys[5] = true;
+       if(keyCode == LEFT) keys[0] = true;
      if(keyCode == UP) keys[1] = true;
      if(keyCode == RIGHT) keys[2] = true;
      if(keyCode == DOWN) keys[3] = true;
-     if(key == 'm') keys[4] = true;
-  }
 }
 
 void keyReleased(){
   if(rpg.isRPGActive){
-     if(keyCode == LEFT) keys[0] = false;
-     if(keyCode == UP) keys[1] = false;
-     if(keyCode == RIGHT) keys[2] = false;
-     if(keyCode == DOWN) keys[3] = false;
      if(key == 'm') keys[4] = false;
 
   }
+       if(keyCode == LEFT) keys[0] = false;
+     if(keyCode == UP) keys[1] = false;
+     if(keyCode == RIGHT) keys[2] = false;
+     if(keyCode == DOWN) keys[3] = false;
+       if(b.isBattleActive) if(key == ' ') keys[5] = false;
+
 }

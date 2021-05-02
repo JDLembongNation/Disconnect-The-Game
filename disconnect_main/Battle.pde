@@ -4,18 +4,20 @@ public class Battle{
   boolean isEnemyDead;
   Player player;
   Enemy enemy;
+  boolean isBattleActive;
   void initialize(Player player, Enemy enemy){
     this.player = player;
     this.enemy = enemy;
     bs = new BulletSystem();
+    isBattleActive = true;
   }
   
   void run(){
     if(!enemy.isEnemyDead() && !player.isPlayerDead()){
      enemy.run(bs);
-     player.run();
+     player.run(bs);
      update();  
-     bs.run(player, 10);
+     bs.run(player, enemy,10);
     }else{
       //return to RPG with appropriate sol.
     }

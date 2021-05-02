@@ -4,7 +4,7 @@ public class Player{
   public Player(){
      position = new PVector(300,550);
   }
-  void run(){
+  void run(BulletSystem bs){
     if(keys[0]){
       if(position.x > 0) position.x -=2;
     }
@@ -16,6 +16,15 @@ public class Player{
     }
     if(keys[3]){
       if(position.y < height) position.y +=2;
+    }
+    if(keys[5]){
+      //FIRE THAT SHIT
+      if(timers[7] < millis()){
+      Bullet b = new Bullet(position.copy(), new PVector(0, -5), new PVector(0,0));
+      b.setToPlayerBullet();
+      bs.addBullet(b);
+      timers[7] = millis() + 75;
+      }
     }
   }
   

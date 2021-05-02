@@ -19,13 +19,20 @@ public class BulletSystem{
     bullets.add(new Bullet(position, ratio, extend));
   }
   
-  void run(Player player, int constraints){
+  void run(Player player, Enemy enemy, int constraints){
     for(int i = 0; i< bullets.size(); i++){
       Bullet b = bullets.get(i);
       b.update();
       b.displayRegularBullet();
+      if(!b.isPlayerBullet){
       if(inRegion(b.position, player.position, constraints)){
         player.deductLife();
+        }
+      }else{
+        if(inRegion(b.position, enemy.position, constraints)){
+          enemy.health-=2;
+          System.out.println(enemy.health);
+        }
       }
       if(b.isDead()){
         bullets.remove(b);
