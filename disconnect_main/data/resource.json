@@ -69,6 +69,9 @@
             ],
             "map":{
                 "difficulty":1,
+                "floor":{
+                    "id":0
+                },
                 "objects":[{
                     "id":1,
                     "width":90,

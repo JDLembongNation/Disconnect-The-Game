@@ -107,6 +107,7 @@ public class Map{
      image(rpgBackground[3],150,150);
      image(rpgBackground[3],90,120);
      image(rpgBackground[3],150,180);
+     image(rpgBackground[])
    }
    
 }

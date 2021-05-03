@@ -16,12 +16,12 @@ void setup() {
   font = createFont("monogram.ttf", 30);
   rpg = new RPG(loadJSONObject("./data/resource.json"));
   forestBackground = new PImage[5];
-  rpgBackground = new PImage[4];
+  rpgBackground = new PImage[7];
   mainCharacter = new PImage[4];
   for(int i = 0; i < 5; i++){
     forestBackground[i] = loadImage("./data/opening-bg/"+i+".png");
   }
-  for(int i = 0; i < 4; i++){
+  for(int i = 0; i < 7; i++){
     rpgBackground[i] = loadImage("./data/background/"+i+".png");
   }
   for(int i = 0; i < 4; i++){
@@ -44,7 +44,7 @@ void draw(){
      rpg.execScene(scene);
      
    }else{
-     scene++;
+      scene++;
      rpg.isSceneFinished=false;
    }
    
