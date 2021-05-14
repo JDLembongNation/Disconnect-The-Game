@@ -15,7 +15,7 @@ public class Map {
     isCompleted=false;
     playerPosition = new PVector(90, 90);
     nodeMap = new MapNode[5][5]; //Can make dynamic?
-    nodeMap[0][0] = generateNodes(new MapNode(), 0, 4, 0, 0);
+    nodeMap[0][0] = generateNodes(new MapNode(), 0, 1, 0, 0);
     displayMapNodes();
     connectNodes();
   }
@@ -83,6 +83,8 @@ public class Map {
     //Display all the assets etc. 
     //hard code for now. 
     spawnFloor(0);
+    spawnLines();
+
     spawnTrees();
     renderCharacter();
     spawnNPC();
@@ -148,10 +150,9 @@ public class Map {
       }
       for (int i = 0; i < y; i++) {
         for (int j = 0; j < x; j++) {
-          if (!isWalkable[placeY+i][placeX+j]){
             isWalkable[placeY+i][placeX+j] = false;
             isInteractable[placeY+i][placeX+j] = true;
-          }
+            System.out.println("POS Y: " + (placeY+i)+ "; POS X:" + (placeX+j));
         }
       }
       return new PVector(placeX*unitLength, placeY*unitLength);
@@ -284,7 +285,25 @@ public class Map {
       }
     }
   }
-
+  void spawnLines(){
+    for (int i = 0; i < width; i+=unitLength) {
+       line(i, 0, i, 600);
+    }
+    for (int i = 0; i < height; i+=unitLength) {
+       line(0, i, 600, i);
+    }
+    //debug. 
+    
+    boolean[][] walk = nodeMap[mapPosY][mapPosX].isWalkable;
+    for(int i = 0; i < walk.length; i++){
+      for(int j = 0; j < walk[i].length; j++){
+        if(!walk[i][j]){
+           fill(140,20,15);
+            rect(j*unitLength,i*unitLength,unitLength, unitLength);
+        }
+      }
+    }
+  }
   void spawnNPC() {
        MapNode current = nodeMap[mapPosY][mapPosX];
        for(int i = 0; i < current.npcs.size(); i++){
