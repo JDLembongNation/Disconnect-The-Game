@@ -1,4 +1,4 @@
-import java.util.*; //<>//
+import java.util.*; //<>// //<>//
 public class Map {
   final int unitLength = 30;
   PVector playerPosition;
@@ -30,33 +30,40 @@ public class Map {
       switch(direction) {
       case 0: 
         {
-          if (playerPosition.x >0 && nodeMap[mapPosY][mapPosX].isWalkable[(int)playerPosition.y/30][((int)playerPosition.x/30)-1]){ 
-            playerPosition.x -= unitLength;
+          if (playerPosition.x >0 && nodeMap[mapPosY][mapPosX].isWalkable[(int)playerPosition.y/30][((int)playerPosition.x/30)-1])playerPosition.x -= unitLength;
+          if (playerPosition.x == 0) {
+            playerPosition.x = width-unitLength*2;
+            mapPosX--;
           }
           currentPosition = 0;
           break;
         }
       case 1: 
         {
-          if (playerPosition.y > 0  && nodeMap[mapPosY][mapPosX].isWalkable[((int)playerPosition.y/30)-1][((int)playerPosition.x/30)]){
-            playerPosition.y -=unitLength;
+          if (playerPosition.y > 0  && nodeMap[mapPosY][mapPosX].isWalkable[((int)playerPosition.y/30)-1][((int)playerPosition.x/30)]) playerPosition.y -=unitLength;
+          if (playerPosition.y == 0) {
+            playerPosition.y = height-unitLength*2;
+            mapPosY--;
           }
           currentPosition=1;
           break;
         }
       case 2: 
         {
-          if (playerPosition.x <width-unitLength  && nodeMap[mapPosY][mapPosX].isWalkable[(int)playerPosition.y/30][((int)playerPosition.x/30)+1]){
-            playerPosition.x += unitLength;
+          if (playerPosition.x <width-unitLength  && nodeMap[mapPosY][mapPosX].isWalkable[(int)playerPosition.y/30][((int)playerPosition.x/30)+1])playerPosition.x += unitLength;
+          if (playerPosition.x == width-unitLength) {
+            playerPosition.x = unitLength*2;
+            mapPosX++;
           }
           currentPosition=2;
           break;
         }
       case 3: 
         {
-          if (playerPosition.y < height-unitLength*2 && nodeMap[mapPosY][mapPosX].isWalkable[((int)playerPosition.y/30)+1][((int)playerPosition.x/30)-1]){
-            playerPosition.y +=unitLength;
-          
+          if (playerPosition.y < height-unitLength*2 && nodeMap[mapPosY][mapPosX].isWalkable[((int)playerPosition.y/30)+1][((int)playerPosition.x/30)-1])playerPosition.y +=unitLength;
+          if (playerPosition.y == height-unitLength*2) {
+            playerPosition.y = unitLength*2;
+            mapPosY++;
           }
           currentPosition=3;
           break;
@@ -192,7 +199,7 @@ public class Map {
       int separator = (int) (random(10));
       if (separator%2 == 0) {
         if (nodeMap[posY+1][posX]==null) {
-                  System.out.println("Added SOuth");
+          System.out.println("Added SOuth");
           MapNode newNode = new MapNode();
           newNode.top = node;
           nodeMap[posY+1][posX] = newNode;
@@ -211,23 +218,23 @@ public class Map {
         }
       } else {/*
         if (nodeMap[posY][posX+1] == null) {
-          MapNode newNode = new MapNode();
-          newNode.left = node;
-          nodeMap[posY][posX+1] = newNode;
-          node.right = generateNodes(newNode, layer+1, maxLayer, posX+1, posY);
-        } else {
-          return nodeMap[posY][posX+1];
-        }
-        if (nodeMap[posY+1][posX] == null) {
-                  System.out.println("Added SOuth");
-          MapNode newNode = new MapNode();
-          nodeMap[posX][posY+1] = newNode;
-          newNode.top = node;
-          node.bottom = generateNodes(newNode, layer+1, maxLayer, posX, posY+1);
-        } else {
-          return nodeMap[posY+1][posX];
-        }
-        */
+       MapNode newNode = new MapNode();
+       newNode.left = node;
+       nodeMap[posY][posX+1] = newNode;
+       node.right = generateNodes(newNode, layer+1, maxLayer, posX+1, posY);
+       } else {
+       return nodeMap[posY][posX+1];
+       }
+       if (nodeMap[posY+1][posX] == null) {
+       System.out.println("Added SOuth");
+       MapNode newNode = new MapNode();
+       nodeMap[posX][posY+1] = newNode;
+       newNode.top = node;
+       node.bottom = generateNodes(newNode, layer+1, maxLayer, posX, posY+1);
+       } else {
+       return nodeMap[posY+1][posX];
+       }
+       */
       }
     }
     return node;
@@ -248,27 +255,15 @@ public class Map {
     image(rpgBackground[1], 290, 300);
     image(rpgBackground[1], 380, 300);
     image(rpgBackground[1], 470, 300);
-    /*
-    for (int i = 0; i < width; i+=unitLength*2) {
-     image(rpgBackground[2], i, 0);
-     image(rpgBackground[2], i, 540);
-     }
-     for (int i = 0; i < height; i+=unitLength*2) {
-     // image(rpgBackground[2], 0, i);
-     image(rpgBackground[2], 540, i);
-     }
-     */
     image(rpgBackground[3], 90, 90);
     image(rpgBackground[3], 150, 150);
     image(rpgBackground[3], 90, 120);
     image(rpgBackground[3], 150, 180);
-
-    //Spawn Trees
   }
 
   //Take Current Node and separation.
   void spawnTrees() {
-    MapNode current = nodeMap[mapPosY][mapPosX]; //<>//
+    MapNode current = nodeMap[mapPosY][mapPosX];
 
     for (int i = 0; i < height; i+=unitLength*2) {
       if (!(current.hasEntryPoint[0] && i >= current.entryPoints[0] && i <= current.entryPoints[1])) {
