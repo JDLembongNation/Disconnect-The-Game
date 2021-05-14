@@ -69,8 +69,6 @@ public class Map {
           currentPosition=3;
           break;
         }
-      case 4: 
-        break;
       }
       timers[5] = millis()+150;
     }
@@ -91,8 +89,32 @@ public class Map {
   }
 
   TriggerEvent playerInteract() {
-    String[] text = {"You interacted with something!"};
-    return new TriggerEvent(text);
+    int relY = (int)playerPosition.y/30;
+    int relX = (int) playerPosition.x/30;
+    switch(currentPosition){
+      case 0:{
+         if(nodeMap[mapPosY][mapPosX].isInteractable[relY][relX-1]){
+           for(int i = 0; i < (nodeMap[mapPosY][mapPosX].npcs.size()); i++){
+             NPC n = nodeMap[mapPosY][mapPosX].npcs.get(i);
+             if(n.position.x == ((relX-1)*unitLength) && n.position.y == (relY*unitLength)) return new TriggerEvent(n.getSpeech());
+           }
+         }
+      }
+        break;
+      case 1:{
+      
+      }
+       break;
+      case 2:{
+      
+      }
+      break;
+      case 3:{
+      
+      }
+      break;
+    }
+    return null;
   }
 
   public class MapNode {
@@ -125,7 +147,7 @@ public class Map {
       //Generate NPC Location
       int npcNumber = (int) random(4);
       for (int i = 0; i < npcNumber; i++) {
-        int placement = (int) random(scene.npcList.size()); //can change to pseudorandom  
+        int placement = (int) random(scene.npcList.size()); //can change to pseudorandom
         NPC npc = scene.npcList.get(placement);
         //generate random position within block
         npc.position = findNewPosition(1, 2);
@@ -135,7 +157,6 @@ public class Map {
     PVector findNewPosition(int x, int y) {
       boolean found = false;
       int placeX = 0;
-      
       int placeY = 0;
       while (!found) {
         boolean intercept = false;
@@ -238,7 +259,7 @@ public class Map {
       int separator = (int) (random(10));
       if (separator%3 == 0) {
         if (nodeMap[posY+1][posX]==null) {
-          System.out.println("Added SOuth");
+          System.out.println("Added South");
           MapNode newNode = new MapNode();
           newNode.top = node;
           nodeMap[posY+1][posX] = newNode;
@@ -265,7 +286,7 @@ public class Map {
           return nodeMap[posY][posX+1];
         }
         if (nodeMap[posY+1][posX] == null) {
-          System.out.println("Added SOuth");
+          System.out.println("Added South");
           MapNode newNode = new MapNode();
           nodeMap[posX][posY+1] = newNode;
           newNode.top = node;
@@ -305,10 +326,10 @@ public class Map {
     }
   }
   void spawnNPC() {
-       MapNode current = nodeMap[mapPosY][mapPosX];
-       for(int i = 0; i < current.npcs.size(); i++){
-         image(mainCharacter[3], current.npcs.get(i).position.x,current.npcs.get(i).position.y);
-       }
+     MapNode current = nodeMap[mapPosY][mapPosX];
+     for(int i = 0; i < current.npcs.size(); i++){
+       image(mainCharacter[3], current.npcs.get(i).position.x,current.npcs.get(i).position.y);
+     }
   }
   void renderCharacter() {
     image(mainCharacter[currentPosition], playerPosition.x, playerPosition.y);

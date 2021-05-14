@@ -30,8 +30,8 @@ void setup() {
   openingBG = loadImage("./data/opening-bg/cyberpunk-street.png");
   battleImages = new PImage[1];
   battleImages[0] = loadImage("./data/battle/bg-1.png");
-   timers = new float[14];
-    iterators = new int[7];
+   timers = new float[15];
+    iterators = new int[8];
     scene = 0;
     b = new Battle();
    b.initialize(new Player(3), new Boss_Chapter_1(null, new PVector(300,200), 2,100));

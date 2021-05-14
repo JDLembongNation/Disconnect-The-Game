@@ -141,15 +141,15 @@
                 "sideCharacters":[
                     {
                         "name":"Stranger",
-                        "text":["I can’t really remember how I got here. As the old saying goes…"]
+                        "text":["I can't really remember how I got here. As the old saying goes…"]
                     },
                     {
                         "name":"Stranger",
-                        "text":["I’ve lost my dog at the park earlier today, can you help me find her?"]
+                        "text":["I've lost my dog at the park earlier today, can you help me find her?"]
                     },
                     {
                         "name":"Stranger",
-                        "text":["…"]
+                        "text":["..."]
                     },
                     {
                         "name":"Stranger",
@@ -157,7 +157,7 @@
                     },
                     {
                         "name":"Stranger",
-                        "text":["I think I’ll put some more stocks in this firm because..."]
+                        "text":["I think I'll put some more stocks in this firm because..."]
                     },
                     {
                         "name":"Stranger",
@@ -166,7 +166,7 @@
                     },
                     {
                         "name":"Stranger",
-                        "text":["I can’t really think of anything, let alone say anything meaningful."]
+                        "text":["I can't really think of anything, let alone say anything meaningful."]
                     }
                 ]    
             },
