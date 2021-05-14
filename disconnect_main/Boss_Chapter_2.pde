@@ -1,16 +1,16 @@
-public class Boss_Chapter_1 extends Enemy{
-  boolean spellCardActive = false;
+public class Boss_Chapter_2 extends Enemy{
+boolean spellCardActive = false;
   int spellCardCurr = 0;
   int spellCardLaser = 100;
   float theta[];
-  float[] ratios = {(2*PI * 1/((1 + sqrt(5)) / 2)),(2*PI * 1/PI), (2*PI * 1/4)};
-  public Boss_Chapter_1(PImage character, PVector position, int lives, float health){
+  float[] ratios = {(2*PI * 1/((1 + sqrt(5)) / 2)),(2*PI * 1/PI)};
+  public Boss_Chapter_2(PImage character, PVector position, int lives, float health){
     super(character, position, lives, health);
     this.theta = new float[3];
   }
   
   void run(BulletSystem bs){
-    if(super.health > 25){ normalMove(bs);
+    if(super.health > 50){ normalMove(bs);
         move();
     }
     else if(super.health > 0){
@@ -29,7 +29,7 @@ public class Boss_Chapter_1 extends Enemy{
   }
   
   //timer 10
-  void spellCard2(BulletSystem bs){
+  void spellCard1(BulletSystem bs){
     super.inSpell = true;
     if(timers[10] < millis()){
     for(int i = 0; i < 30; i++){
@@ -57,19 +57,8 @@ public class Boss_Chapter_1 extends Enemy{
     
     
   }
-  void spellCard1(BulletSystem bs){
+  void spellCard2(BulletSystem bs){
     super.inSpell = true;
-    if(timers[13] < millis()){
-      theta[0]+=PI/32;
-      for(int i = 0; i < 4; i++){
-        theta[0] += ratios[2];
-        if(theta[0] > 2*PI) theta[0]-=2*PI;
-          Bullet b = new Bullet(super.position.copy(), theta[0],30,2);
-          b.setLife(3);
-          bs.addBullet(b);
-        }
-       timers[13] = millis()+100;
-      }
   }
  
   void normalMove(BulletSystem bs){

@@ -30,7 +30,7 @@ void setup() {
   openingBG = loadImage("./data/opening-bg/cyberpunk-street.png");
   battleImages = new PImage[1];
   battleImages[0] = loadImage("./data/battle/bg-1.png");
-   timers = new float[13];
+   timers = new float[14];
     iterators = new int[7];
     scene = 0;
     b = new Battle();
@@ -41,14 +41,14 @@ void draw(){
   background(0);
   
    if(!rpg.isSceneFinished){
-     rpg.execScene(scene);
+     rpg.execScene(1); //scene
      
    }else{
       scene++;
      rpg.isSceneFinished=false;
    }
-   
-  // b.run();
+  
+  //b.run();
 }
 
 void keyPressed(){

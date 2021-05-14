@@ -1,4 +1,5 @@
 public class Player{
+  int coins;
   PVector position;
   boolean isDead;
   int lives;

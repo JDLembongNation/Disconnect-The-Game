@@ -32,9 +32,9 @@ public class BulletSystem{
          b.displayRegularBullet(130);
         if(inRegion(b.position, enemy.position, enemyConstraints)){
           if(enemy.inSpell){
-            enemy.health-=3;//0.05
+            enemy.health-=0.05;//0.05
           }
-          else enemy.health-=3; //0.2
+          else enemy.health-=0.2; //0.2
         }
       }
       if(b.isDead()){

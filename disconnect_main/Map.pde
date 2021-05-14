@@ -1,113 +1,294 @@
-public class Map{
+import java.util.*; //<>//
+public class Map {
   final int unitLength = 30;
   PVector playerPosition;
   boolean isCompleted;
   ArrayList<NPC> npcs;
-  MapNode root;
-  MapNode current;
+  MapNode[][] nodeMap;
   int currentPosition = 0;
-  public Map(){
+  int mapPosX;
+  int mapPosY;
+  public Map() {
+    mapPosX = 0;
+    mapPosY = 0;
     isCompleted=false;
-    playerPosition = new PVector(0,0);
+    playerPosition = new PVector(90, 90);
+    nodeMap = new MapNode[5][5]; //Can make dynamic?
+    nodeMap[0][0] = generateNodes(new MapNode(), 0, 4, 0, 0);
+    displayMapNodes();
+    connectNodes();
   }
   //List of items available.
   //Events and interactions. 
   //Mappings of images and icons
-  
+
   //Want a function to return a map, an image of a map and interactions in the map. 
   //Function here that deals with player movement in the map. 
   //Ie. void playermove(direction); TriggerEvent playerinteract(), if theres something return something. 
-   void playerMovement(int direction){
-     if(timers[5] < millis()){
-     switch(direction){
-       case 0: {
-         if(playerPosition.x >0) playerPosition.x -= unitLength;
-         currentPosition = 0;
-         break;
-       }case 1: {
-         if(playerPosition.y > 0)playerPosition.y -=unitLength;
-         currentPosition=1;
-         break;
-       }case 2: {
-       if(playerPosition.x <width-unitLength) playerPosition.x += unitLength;
-         currentPosition=2;
-         break;
-       }case 3: {
-         if(playerPosition.y < height-60)playerPosition.y +=unitLength;
-         currentPosition=3;
-         break;
-       }case 4: 
-         break;
-     }
-     timers[5] = millis()+150;
-     }
-   }
-   
-   void render(){
-     //Display all the assets etc. 
-     //hard code for now. 
-     spawnFloor(0);
-     renderCharacter();
-     spawnItems();
-   }
-   
-   TriggerEvent playerInteract(){
-     String[] text = {"You interacted with something!"};
-     return new TriggerEvent(text);
-   }
-   
-   public class MapNode{
-     //Each map node will have a fixed size of 600x600. 
-      MapNode nodes[] = new MapNode[4];
-      int entryPoints[] = new int[8]; //LEFT UP RIGHT DOWN
-      void addTopNode(){
-        nodes[1] = new MapNode();
-        //generate entry point.
+  void playerMovement(int direction) {
+    if (timers[5] < millis()) {
+      switch(direction) {
+      case 0: 
+        {
+          if (playerPosition.x >0 && nodeMap[mapPosY][mapPosX].isWalkable[(int)playerPosition.y/30][((int)playerPosition.x/30)-1]){ 
+            playerPosition.x -= unitLength;
+          }
+          currentPosition = 0;
+          break;
+        }
+      case 1: 
+        {
+          if (playerPosition.y > 0  && nodeMap[mapPosY][mapPosX].isWalkable[((int)playerPosition.y/30)-1][((int)playerPosition.x/30)]){
+            playerPosition.y -=unitLength;
+          }
+          currentPosition=1;
+          break;
+        }
+      case 2: 
+        {
+          if (playerPosition.x <width-unitLength  && nodeMap[mapPosY][mapPosX].isWalkable[(int)playerPosition.y/30][((int)playerPosition.x/30)+1]){
+            playerPosition.x += unitLength;
+          }
+          currentPosition=2;
+          break;
+        }
+      case 3: 
+        {
+          if (playerPosition.y < height-unitLength*2 && nodeMap[mapPosY][mapPosX].isWalkable[((int)playerPosition.y/30)+1][((int)playerPosition.x/30)-1]){
+            playerPosition.y +=unitLength;
+          
+          }
+          currentPosition=3;
+          break;
+        }
+      case 4: 
+        break;
       }
-      void addLeftNode(){
-        nodes[0] = new MapNode();
+      timers[5] = millis()+150;
+    }
+  }
+
+  void checkPositionNotFull() {
+  }
+
+  void render() {
+    //Display all the assets etc. 
+    //hard code for now. 
+    spawnFloor(0);
+    spawnTrees();
+    renderCharacter();
+    spawnItems();
+  }
+
+  TriggerEvent playerInteract() {
+    String[] text = {"You interacted with something!"};
+    return new TriggerEvent(text);
+  }
+
+  public class MapNode {
+    //Each map node will have a fixed size of 600x600. 
+    boolean isWalkable[][] = new boolean[height/unitLength][width/unitLength];
+    MapNode top;
+    MapNode left;
+    MapNode right;
+    MapNode bottom;
+    MapNode nodes[] = new MapNode[4];
+    boolean hasEntryPoint[] = new boolean[4];
+    int entryPoints[] = new int[8]; //LEFT UP RIGHT DOWN
+    public MapNode() {
+      for (boolean[] row : isWalkable) Arrays.fill(row, true);
+      //close borders and then remove them with tree points. 
+      for (int i =0; i < width/unitLength; i++) {
+        isWalkable[1][i] = false;
+        isWalkable[18][i] = false;
+        isWalkable[0][i] = false;
+        isWalkable[19][i] = false;
       }
-      void addRightNode(){
-        nodes[2] = new MapNode();
+      for (int i =0; i < height/unitLength; i++) {
+        isWalkable[i][1] = false;
+        isWalkable[i][18] = false;
+        isWalkable[i][0] = false;
+        isWalkable[i][19] = false;
       }
-      
-      void addBottomNode(){
-        nodes[3] = new MapNode();
+    }
+    void addNorthEntryPoint(int start, int finish) {
+      entryPoints[2] =  start;
+      entryPoints[3] =  finish;
+      hasEntryPoint[1] = true;
+      for (int i = start; i <=finish; i+=unitLength) {
+        isWalkable[0][i/30] = true;
+        isWalkable[1][i/30] = true;
       }
-   }
-   
-   void generateNodes(){
-     
-   }
-   
-   void spawnFloor(int floorType){
-     for(int i = 0; i < width; i+=unitLength){
-       for(int j = 0; j < height; j+=unitLength){
-          image(rpgBackground[floorType], i,j);
-       }
+    }
+
+    void addWestEntryPoint(int start, int finish) {
+      entryPoints[0] =  start;
+      entryPoints[1] =  finish;
+      hasEntryPoint[0] = true;
+      for (int i = start; i <=finish; i+=unitLength) {
+        isWalkable[i/30][0] = true;
+        isWalkable[i/30][1] = true;
+      }
+    }
+    void addEastEntryPoint(int start, int finish) {
+      entryPoints[4] =  start;
+      entryPoints[5] =  finish;
+      hasEntryPoint[2] = true;
+      for (int i = start; i <=finish; i+=unitLength) {
+        isWalkable[i/30][18] = true;
+        isWalkable[i/30][19] = true;
+      }
+    }
+
+    void addSouthEntryPoint(int start, int finish) {
+      System.out.println("South Connector Established");
+      entryPoints[6] =  start;
+      entryPoints[7] =  finish;
+      hasEntryPoint[3] = true;
+      for (int i = start; i <=finish; i+=unitLength) {
+        isWalkable[18][i/30] = true;
+        isWalkable[19][i/30] = true;
+      }
+    }
+  }
+
+  //Use this to generate Map.
+  public void displayMapNodes() {
+    for (int i = 0; i < 5; i++) {
+      for (int j = 0; j < 5; j++) {
+        String t = "x";
+        if (nodeMap[i][j]!=null) t = "o";
+        System.out.print(t);
+      }
+      System.out.print("\n");
+    }
+  }
+
+  void connectNodes() {
+    for (int y = 0; y < 5; y++) {
+      for (int x = 0; x < 5; x++) {
+        if (y > 0) {
+          if (nodeMap[y-1][x] !=null && nodeMap[y][x]!=null) {
+            int positionSplit = (int) random(7);
+            nodeMap[y-1][x].addSouthEntryPoint(positionSplit*60, (positionSplit+2)*60);
+            nodeMap[y][x].addNorthEntryPoint(positionSplit*60, (positionSplit+2)*60);
+          }
+        }
+        if (x > 0) {
+          if (nodeMap[y][x-1] != null && nodeMap[y][x]!=null) {
+            int positionSplit = (int) random(7);
+            nodeMap[y][x-1].addEastEntryPoint(positionSplit*60, (positionSplit+2)*60);
+            nodeMap[y][x].addWestEntryPoint(positionSplit*60, (positionSplit+2)*60);
+          }
+        }
+      }
+    }
+  }
+
+  MapNode generateNodes(MapNode node, int layer, int maxLayer, int posX, int posY) {
+    if (layer == maxLayer) {
+      return node;
+    } else {
+      int separator = (int) (random(10));
+      if (separator%2 == 0) {
+        if (nodeMap[posY+1][posX]==null) {
+                  System.out.println("Added SOuth");
+          MapNode newNode = new MapNode();
+          newNode.top = node;
+          nodeMap[posY+1][posX] = newNode;
+          node.bottom = generateNodes(newNode, layer+1, maxLayer, posX, posY+1);
+        } else {
+          return nodeMap[posY+1][posX];
+        }
+      } else if (separator%2 == 1) {
+        if (nodeMap[posY][posX+1]==null) {
+          MapNode newNode = new MapNode();
+          newNode.left = node;
+          nodeMap[posY][posX+1] = newNode;
+          node.right = generateNodes(newNode, layer+1, maxLayer, posX+1, posY);
+        } else {
+          return nodeMap[posY][posX+1];
+        }
+      } else {/*
+        if (nodeMap[posY][posX+1] == null) {
+          MapNode newNode = new MapNode();
+          newNode.left = node;
+          nodeMap[posY][posX+1] = newNode;
+          node.right = generateNodes(newNode, layer+1, maxLayer, posX+1, posY);
+        } else {
+          return nodeMap[posY][posX+1];
+        }
+        if (nodeMap[posY+1][posX] == null) {
+                  System.out.println("Added SOuth");
+          MapNode newNode = new MapNode();
+          nodeMap[posX][posY+1] = newNode;
+          newNode.top = node;
+          node.bottom = generateNodes(newNode, layer+1, maxLayer, posX, posY+1);
+        } else {
+          return nodeMap[posY+1][posX];
+        }
+        */
+      }
+    }
+    return node;
+  }
+
+  void spawnFloor(int floorType) {
+    for (int i = 0; i < width; i+=unitLength) {
+      for (int j = 0; j < height; j+=unitLength) {
+        image(rpgBackground[floorType], i, j);
+      }
+    }
+  }
+  void renderCharacter() {
+    image(mainCharacter[currentPosition], playerPosition.x, playerPosition.y);
+  }
+  void spawnItems() {
+    image(rpgBackground[1], 200, 300);
+    image(rpgBackground[1], 290, 300);
+    image(rpgBackground[1], 380, 300);
+    image(rpgBackground[1], 470, 300);
+    /*
+    for (int i = 0; i < width; i+=unitLength*2) {
+     image(rpgBackground[2], i, 0);
+     image(rpgBackground[2], i, 540);
      }
-   }
-   void renderCharacter(){
-     image(mainCharacter[currentPosition], playerPosition.x, playerPosition.y);
-   }
-   void spawnItems(){
-     image(rpgBackground[1],200,300);
-     image(rpgBackground[1],290,300);
-     image(rpgBackground[1],380,300);
-     image(rpgBackground[1],470,300);
-     for(int i = 0; i < width; i+=unitLength*2){
-       image(rpgBackground[2],i,0);
-       image(rpgBackground[2],i,540);
+     for (int i = 0; i < height; i+=unitLength*2) {
+     // image(rpgBackground[2], 0, i);
+     image(rpgBackground[2], 540, i);
      }
-     for(int i = 0; i < height; i+=unitLength*2){
-       image(rpgBackground[2],0,i);
-       image(rpgBackground[2],540,i);
-     }
-     image(rpgBackground[3],90,90);
-     image(rpgBackground[3],150,150);
-     image(rpgBackground[3],90,120);
-     image(rpgBackground[3],150,180);
-     image(rpgBackground[])
-   }
-   
+     */
+    image(rpgBackground[3], 90, 90);
+    image(rpgBackground[3], 150, 150);
+    image(rpgBackground[3], 90, 120);
+    image(rpgBackground[3], 150, 180);
+
+    //Spawn Trees
+  }
+
+  //Take Current Node and separation.
+  void spawnTrees() {
+    MapNode current = nodeMap[mapPosY][mapPosX]; //<>//
+
+    for (int i = 0; i < height; i+=unitLength*2) {
+      if (!(current.hasEntryPoint[0] && i >= current.entryPoints[0] && i <= current.entryPoints[1])) {
+        image(rpgBackground[2], 0, i);
+      }
+    }
+    for (int i = 0; i < width; i+=unitLength*2) {
+      if (!(current.hasEntryPoint[1] && i >= current.entryPoints[2] && i <= current.entryPoints[3])) {
+        image(rpgBackground[2], i, 0);
+      }
+    }
+    for (int i = 0; i < height; i+=unitLength*2) {
+      if (!(current.hasEntryPoint[2] && i >= current.entryPoints[4] && i <= current.entryPoints[5])) {
+        image(rpgBackground[2], 540, i);
+      }
+    }
+    for (int i = 0; i < width; i+=unitLength*2) {
+      if (!(current.hasEntryPoint[3] && i >= current.entryPoints[6] && i <= current.entryPoints[7])) {
+        image(rpgBackground[2], i, 540);
+      }
+    }
+  }
 }

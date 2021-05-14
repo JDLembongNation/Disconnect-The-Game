@@ -54,13 +54,13 @@ public class RPG {
     if (keys[2])map.playerMovement(2);
     if (keys[3])map.playerMovement(3);
     if (keys[4]) {
-      //Interact!!!!
       TriggerEvent trigger = map.playerInteract();
       if (trigger!=null) {
         System.out.println(trigger.text[0]);
       }
     }
     map.render();
+    //showTextBox("Hello Elmo");
   }
 
   //Have a separate function call for opening scene as there are a lot of cutscenes. 
