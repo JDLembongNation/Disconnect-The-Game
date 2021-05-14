@@ -33,15 +33,10 @@ public class RPG {
       return false;
     }
   }
-
-  /**
-   - Move Around 
-   - If in Contact --> Interact, Once done interacting, move around.
-   */
-
+  
   private void executeScene(int scene) {
     if (!isMapGenerated) {
-      map = new Map();
+      map = new Map(scenes.get(scene));
       isMapGenerated = true;
     }
     if (map.isCompleted) {
@@ -172,7 +167,20 @@ public class RPG {
         }
         events.add(new Event(event.getInt("eventID"), event.getInt("triggerID"), text));
       }
-      scenes.add(new Scene(sc.getInt("sceneID"), sc.getString("title"), sc.getString("subtitleTop"), sc.getString("subtitleBottom"), events));
+      JSONObject npcObject = sc.getJSONObject("npc");
+      ArrayList<NPC> npcs = new ArrayList<NPC>();
+      JSONArray mainStoryNPC = npcObject.getJSONArray("storyCharacters");
+      JSONArray sideStoryNPC = npcObject.getJSONArray("sideCharacters");
+      for(int j = 0; j < sideStoryNPC.size(); j++){
+        String name = sideStoryNPC.getJSONObject(i).getString("name");
+        JSONArray t = sideStoryNPC.getJSONObject(i).getJSONArray("text");
+        String[] text  = new String[t.size()];
+        for(int k = 0; k < t.size();k++){
+          text[k] = t.getString(k);
+        }
+        npcs.add(new NPC(false, name, text));  
+      }
+      scenes.add(new Scene(sc.getInt("sceneID"), sc.getString("title"), sc.getString("subtitleTop"), sc.getString("subtitleBottom"), events, npcs));
     }
   }
 }

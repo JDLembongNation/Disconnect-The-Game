@@ -1,14 +1,15 @@
 import java.util.*; //<>// //<>//
 public class Map {
+  Scene scene;
   final int unitLength = 30;
   PVector playerPosition;
   boolean isCompleted;
-  ArrayList<NPC> npcs;
   MapNode[][] nodeMap;
   int currentPosition = 0;
   int mapPosX;
   int mapPosY;
-  public Map() {
+  public Map(Scene scene) {
+    this.scene = scene;
     mapPosX = 0;
     mapPosY = 0;
     isCompleted=false;
@@ -84,7 +85,7 @@ public class Map {
     spawnFloor(0);
     spawnTrees();
     renderCharacter();
-    spawnItems();
+    spawnNPC();
   }
 
   TriggerEvent playerInteract() {
@@ -95,6 +96,8 @@ public class Map {
   public class MapNode {
     //Each map node will have a fixed size of 600x600. 
     boolean isWalkable[][] = new boolean[height/unitLength][width/unitLength];
+    boolean isInteractable[][] = new boolean[height/unitLength][width/unitLength];
+    ArrayList<NPC> npcs = new ArrayList<NPC>();
     MapNode top;
     MapNode left;
     MapNode right;
@@ -103,8 +106,8 @@ public class Map {
     boolean hasEntryPoint[] = new boolean[4];
     int entryPoints[] = new int[8]; //LEFT UP RIGHT DOWN
     public MapNode() {
+      //Generate Borders
       for (boolean[] row : isWalkable) Arrays.fill(row, true);
-      //close borders and then remove them with tree points. 
       for (int i =0; i < width/unitLength; i++) {
         isWalkable[1][i] = false;
         isWalkable[18][i] = false;
@@ -117,6 +120,41 @@ public class Map {
         isWalkable[i][0] = false;
         isWalkable[i][19] = false;
       }
+      //Generate NPC Location
+      int npcNumber = (int) random(4);
+      for (int i = 0; i < npcNumber; i++) {
+        int placement = (int) random(scene.npcList.size()); //can change to pseudorandom  
+        NPC npc = scene.npcList.get(placement);
+        //generate random position within block
+        npc.position = findNewPosition(1, 2);
+        npcs.add(npc);
+      }
+    }
+    PVector findNewPosition(int x, int y) {
+      boolean found = false;
+      int placeX = 0;
+      
+      int placeY = 0;
+      while (!found) {
+        boolean intercept = false;
+        placeX = ((int) random(15))+2;
+        placeY = ((int) random(15))+2;
+        for (int i = 0; i < y; i++) {
+          for (int j = 0; j < x; j++) {
+            if (!isWalkable[placeY+i][placeX+j]) intercept =true;
+          }
+        }
+        if (!intercept) found =true;
+      }
+      for (int i = 0; i < y; i++) {
+        for (int j = 0; j < x; j++) {
+          if (!isWalkable[placeY+i][placeX+j]){
+            isWalkable[placeY+i][placeX+j] = false;
+            isInteractable[placeY+i][placeX+j] = true;
+          }
+        }
+      }
+      return new PVector(placeX*unitLength, placeY*unitLength);
     }
     void addNorthEntryPoint(int start, int finish) {
       entryPoints[2] =  start;
@@ -197,7 +235,7 @@ public class Map {
       return node;
     } else {
       int separator = (int) (random(10));
-      if (separator%2 == 0) {
+      if (separator%3 == 0) {
         if (nodeMap[posY+1][posX]==null) {
           System.out.println("Added SOuth");
           MapNode newNode = new MapNode();
@@ -207,7 +245,7 @@ public class Map {
         } else {
           return nodeMap[posY+1][posX];
         }
-      } else if (separator%2 == 1) {
+      } else if (separator%3 == 1) {
         if (nodeMap[posY][posX+1]==null) {
           MapNode newNode = new MapNode();
           newNode.left = node;
@@ -216,25 +254,24 @@ public class Map {
         } else {
           return nodeMap[posY][posX+1];
         }
-      } else {/*
+      } else {
         if (nodeMap[posY][posX+1] == null) {
-       MapNode newNode = new MapNode();
-       newNode.left = node;
-       nodeMap[posY][posX+1] = newNode;
-       node.right = generateNodes(newNode, layer+1, maxLayer, posX+1, posY);
-       } else {
-       return nodeMap[posY][posX+1];
-       }
-       if (nodeMap[posY+1][posX] == null) {
-       System.out.println("Added SOuth");
-       MapNode newNode = new MapNode();
-       nodeMap[posX][posY+1] = newNode;
-       newNode.top = node;
-       node.bottom = generateNodes(newNode, layer+1, maxLayer, posX, posY+1);
-       } else {
-       return nodeMap[posY+1][posX];
-       }
-       */
+          MapNode newNode = new MapNode();
+          newNode.left = node;
+          nodeMap[posY][posX+1] = newNode;
+          node.right = generateNodes(newNode, layer+1, maxLayer, posX+1, posY);
+        } else {
+          return nodeMap[posY][posX+1];
+        }
+        if (nodeMap[posY+1][posX] == null) {
+          System.out.println("Added SOuth");
+          MapNode newNode = new MapNode();
+          nodeMap[posX][posY+1] = newNode;
+          newNode.top = node;
+          node.bottom = generateNodes(newNode, layer+1, maxLayer, posX, posY+1);
+        } else {
+          return nodeMap[posY+1][posX];
+        }
       }
     }
     return node;
@@ -247,20 +284,16 @@ public class Map {
       }
     }
   }
+
+  void spawnNPC() {
+       MapNode current = nodeMap[mapPosY][mapPosX];
+       for(int i = 0; i < current.npcs.size(); i++){
+         image(mainCharacter[3], current.npcs.get(i).position.x,current.npcs.get(i).position.y);
+       }
+  }
   void renderCharacter() {
     image(mainCharacter[currentPosition], playerPosition.x, playerPosition.y);
   }
-  void spawnItems() {
-    image(rpgBackground[1], 200, 300);
-    image(rpgBackground[1], 290, 300);
-    image(rpgBackground[1], 380, 300);
-    image(rpgBackground[1], 470, 300);
-    image(rpgBackground[3], 90, 90);
-    image(rpgBackground[3], 150, 150);
-    image(rpgBackground[3], 90, 120);
-    image(rpgBackground[3], 150, 180);
-  }
-
   //Take Current Node and separation.
   void spawnTrees() {
     MapNode current = nodeMap[mapPosY][mapPosX];
