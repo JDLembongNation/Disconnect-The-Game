@@ -23,7 +23,7 @@ public class Player{
     if(keys[5]){
       //FIRE THAT SHIT
       if(timers[7] < millis()){
-      Bullet b = new Bullet(position.copy(), new PVector(0, -5), new PVector(0,0));
+      Bullet b = new Bullet(position.copy(), new PVector(0, -10), new PVector(0,0));
       b.setToPlayerBullet();
       bs.addBullet(b);
       timers[7] = millis() + 75;

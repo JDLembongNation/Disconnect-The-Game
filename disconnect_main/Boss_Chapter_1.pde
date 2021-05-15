@@ -1,4 +1,6 @@
 public class Boss_Chapter_1 extends Enemy{
+    int alpha = 0;
+  boolean reverse = false;
   boolean spellCardActive = false;
   int spellCardCurr = 0;
   int spellCardLaser = 100;
@@ -18,11 +20,18 @@ public class Boss_Chapter_1 extends Enemy{
         bs.clear();
         spellCardActive = true;
       }
-      if(super.lives == 2) spellCard1(bs);
-      if(super.lives == 1) spellCard2(bs);
+      if(super.lives == 2){
+        spellCard1(bs);
+                moveAnimation("Ripples Of Time \n 時間的漣漪");
+      }
+      if(super.lives == 1){
+        moveAnimation("");
+        spellCard2(bs);
+      }
     }else{
       lives--;
       super.health = super.maxHealth;
+      reverse = false;
       spellCardActive = false;  
       bs.clear();
   }
@@ -89,6 +98,30 @@ public class Boss_Chapter_1 extends Enemy{
         if(randomNumber%4 == 1) super.position.y +=2;
     if(randomNumber%4 == 2) super.position.x -=2;
     if(randomNumber%4 == 3) super.position.y -=2;
-
+  }
+    void moveAnimation(String name) {
+    if (timers[8] < millis()) {
+      if (!reverse) {
+        if (alpha < 210) {
+          alpha+=5;
+          timers[8]=millis()+10;
+        } else {
+          timers[8]=millis()+3000;
+          reverse = true;
+        }
+      } else {
+        if (alpha > 4) {
+          alpha-=4;
+        } else {
+          alpha=0;
+        }
+      }
+    }
+    noStroke();
+    fill(0, 0, 0, alpha);
+    rect(0, 300, 600, 100);
+    fill(255, alpha);
+    text(name, 200, 330);
+    stroke(0);
   }
 }

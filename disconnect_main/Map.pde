@@ -15,7 +15,7 @@ public class Map {
     isCompleted=false;
     playerPosition = new PVector(90, 90);
     nodeMap = new MapNode[5][5]; //Can make dynamic?
-    nodeMap[0][0] = generateNodes(new MapNode(), 0, 1, 0, 0);
+    nodeMap[0][0] = generateNodes(new MapNode(), 0, 4, 0, 0);
     displayMapNodes();
     connectNodes();
   }

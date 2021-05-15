@@ -34,7 +34,7 @@ public class BulletSystem{
           if(enemy.inSpell){
             enemy.health-=0.05;//0.05
           }
-          else enemy.health-=0.2; //0.2
+          else enemy.health-=5; //0.2
         }
       }
       if(b.isDead()){
