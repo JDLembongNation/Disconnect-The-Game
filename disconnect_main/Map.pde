@@ -18,6 +18,7 @@ public class Map {
     nodeMap[0][0] = generateNodes(new MapNode(), 0, 4, 0, 0);
     displayMapNodes();
     connectNodes();
+    addMainCharacters();
   }
   //List of items available.
   //Events and interactions. 
@@ -74,9 +75,6 @@ public class Map {
     }
   }
 
-  void checkPositionNotFull() {
-  }
-
   void render() {
     //Display all the assets etc. 
     //hard code for now. 
@@ -91,26 +89,27 @@ public class Map {
   TriggerEvent playerInteract() {
     int relY = (int)playerPosition.y/30;
     int relX = (int) playerPosition.x/30;
-    switch(currentPosition){
-      case 0:{
-         if(nodeMap[mapPosY][mapPosX].isInteractable[relY][relX-1]){
-           for(int i = 0; i < (nodeMap[mapPosY][mapPosX].npcs.size()); i++){
-             NPC n = nodeMap[mapPosY][mapPosX].npcs.get(i);
-             if(n.position.x == ((relX-1)*unitLength) && n.position.y == (relY*unitLength)) return new TriggerEvent(n.getSpeech());
-           }
-         }
-      }
-        break;
-      case 1:{
-      
-      }
-       break;
-      case 2:{
-      
+    switch(currentPosition) {
+    case 0:
+      {
+        if (nodeMap[mapPosY][mapPosX].isInteractable[relY][relX-1]) {
+          for (int i = 0; i < (nodeMap[mapPosY][mapPosX].npcs.size()); i++) {
+            NPC n = nodeMap[mapPosY][mapPosX].npcs.get(i);
+            if (n.position.x == ((relX-1)*unitLength) && n.position.y == (relY*unitLength)) return new TriggerEvent(n.getSpeech());
+          }
+        }
       }
       break;
-      case 3:{
-      
+    case 1:
+      {
+      }
+      break;
+    case 2:
+      {
+      }
+      break;
+    case 3:
+      {
       }
       break;
     }
@@ -145,13 +144,15 @@ public class Map {
         isWalkable[i][19] = false;
       }
       //Generate NPC Location
-      int npcNumber = (int) random(4);
+      int npcNumber = (int) random(5);
       for (int i = 0; i < npcNumber; i++) {
         int placement = (int) random(scene.npcList.size()); //can change to pseudorandom
         NPC npc = scene.npcList.get(placement);
-        //generate random position within block
-        npc.position = findNewPosition(1, 2);
-        npcs.add(npc);
+        if (!npc.isInStory) {
+          //generate random position within block
+          npc.position = findNewPosition(1, 2);
+          npcs.add(npc);
+        }
       }
     }
     PVector findNewPosition(int x, int y) {
@@ -171,9 +172,8 @@ public class Map {
       }
       for (int i = 0; i < y; i++) {
         for (int j = 0; j < x; j++) {
-            isWalkable[placeY+i][placeX+j] = false;
-            isInteractable[placeY+i][placeX+j] = true;
-            System.out.println("POS Y: " + (placeY+i)+ "; POS X:" + (placeX+j));
+          isWalkable[placeY+i][placeX+j] = false;
+          isInteractable[placeY+i][placeX+j] = true;
         }
       }
       return new PVector(placeX*unitLength, placeY*unitLength);
@@ -215,6 +215,33 @@ public class Map {
       for (int i = start; i <=finish; i+=unitLength) {
         isWalkable[18][i/30] = true;
         isWalkable[19][i/30] = true;
+      }
+    }
+  }
+
+  public void addMainCharacters() {
+    for (int i = 0; i < scene.npcList.size(); i++) {
+      if (scene.npcList.get(i).isInStory) {
+        switch(scene.npcList.get(i).initialPosition) {
+        case "start": 
+          {
+            NPC character = scene.npcList.get(i);
+            character.position = nodeMap[0][0].findNewPosition(1, 2);
+            nodeMap[0][0].npcs.add(character);
+            break;
+          }
+        case "random":
+          {
+            break;
+          }
+        case "end":
+          {
+            break;
+          }
+        default: 
+          System.err.println("JSON Parser incorrectly formed attribute.");
+          break;
+        }
       }
     }
   }
@@ -306,30 +333,30 @@ public class Map {
       }
     }
   }
-  void spawnLines(){
+  void spawnLines() {
     for (int i = 0; i < width; i+=unitLength) {
-       line(i, 0, i, 600);
+      line(i, 0, i, 600);
     }
     for (int i = 0; i < height; i+=unitLength) {
-       line(0, i, 600, i);
+      line(0, i, 600, i);
     }
     //debug. 
-    
+
     boolean[][] walk = nodeMap[mapPosY][mapPosX].isWalkable;
-    for(int i = 0; i < walk.length; i++){
-      for(int j = 0; j < walk[i].length; j++){
-        if(!walk[i][j]){
-           fill(140,20,15);
-            rect(j*unitLength,i*unitLength,unitLength, unitLength);
+    for (int i = 0; i < walk.length; i++) {
+      for (int j = 0; j < walk[i].length; j++) {
+        if (!walk[i][j]) {
+          fill(140, 20, 15);
+          rect(j*unitLength, i*unitLength, unitLength, unitLength);
         }
       }
     }
   }
   void spawnNPC() {
-     MapNode current = nodeMap[mapPosY][mapPosX];
-     for(int i = 0; i < current.npcs.size(); i++){
-       image(mainCharacter[3], current.npcs.get(i).position.x,current.npcs.get(i).position.y);
-     }
+    MapNode current = nodeMap[mapPosY][mapPosX];
+    for (int i = 0; i < current.npcs.size(); i++) {
+      image(mainCharacter[3], current.npcs.get(i).position.x, current.npcs.get(i).position.y);
+    }
   }
   void renderCharacter() {
     image(mainCharacter[currentPosition], playerPosition.x, playerPosition.y);

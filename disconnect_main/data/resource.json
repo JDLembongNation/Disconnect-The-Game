@@ -120,6 +120,7 @@
                 "storyCharacters":[
                     {
                         "name":"Monk Ji Gong",
+                        "position":"end",
                         "event":[{
                             "eventID":1,
                             "triggerID":0,
@@ -155,6 +156,7 @@
                     },
                     {
                         "name":"Joker",
+                        "position":"start",
                         "event":[{
                             "eventID":0,
                             "triggerID":0,
@@ -195,7 +197,13 @@
                             {
                             "eventID":0,
                             "triggerID":1,
-                            "text":[]
+                            "text":["Shoo!",
+                                    "Get my items will you?"]
+                        },
+                        {
+                            "eventID":0,
+                            "triggerID":2,
+                            "text":["Fantastic!!!"]
                         }
                     ]
                     }

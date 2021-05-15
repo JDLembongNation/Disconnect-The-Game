@@ -1,13 +1,17 @@
 public class NPC{
+  String initialPosition;
   PVector position;
   String name;
   boolean isInStory;
   int eventTicker = 0;
-  ArrayList<String[]> speeches;
+  int triggerTicker = 0;
+  ArrayList<Event> eventList;
   String[] speech;
-  public NPC(boolean isInStory, String name, ArrayList<Event> speeches){
+  public NPC(boolean isInStory, String name, String initialPosition,ArrayList<Event> eventList){
     this.isInStory = isInStory;
     this.name = name;
+    this.initialPosition = initialPosition;
+    this.eventList = eventList;  
   }
     public NPC(boolean isInStory, String name, String[] speech){
     this.isInStory = isInStory;
@@ -16,9 +20,14 @@ public class NPC{
   }
   public String[] getSpeech(){
     if(isInStory){
-     String[] res = speeches.get(eventTicker);
-     if(eventTicker <speeches.size()-1) eventTicker++;
-     return res;
+     for(int i = 0; i < eventList.size();i++){
+       if(eventList.get(i).eventID == eventTicker){
+         if(eventList.get(i).triggerID == triggerTicker){
+           return eventList.get(i).text;
+         }
+       }
+     }
+     return null;
     }else{
      return speech;   
     }

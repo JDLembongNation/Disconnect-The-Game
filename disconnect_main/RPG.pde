@@ -201,7 +201,7 @@ public class RPG {
           }
           npcEvent.add(new Event(eo.getInt("eventID"), eo.getInt("triggerID"), text));
         }
-        npcs.add(new NPC(true,name,npcEvent));
+        npcs.add(new NPC(true,name,mainStoryNPC.getJSONObject(j).getString("position"), npcEvent));
       }
       JSONArray sideStoryNPC = npcObject.getJSONArray("sideCharacters");
       for (int j = 0; j < sideStoryNPC.size(); j++) {
