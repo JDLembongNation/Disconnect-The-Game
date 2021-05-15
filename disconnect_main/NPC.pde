@@ -5,9 +5,8 @@ public class NPC{
   int eventTicker = 0;
   ArrayList<String[]> speeches;
   String[] speech;
-  public NPC(boolean isInStory, String name, ArrayList<String[]> speeches){
+  public NPC(boolean isInStory, String name, ArrayList<Event> speeches){
     this.isInStory = isInStory;
-    this.speeches = speeches;
     this.name = name;
   }
     public NPC(boolean isInStory, String name, String[] speech){
