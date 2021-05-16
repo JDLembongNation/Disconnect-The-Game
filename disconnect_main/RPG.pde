@@ -215,7 +215,8 @@ public class RPG {
           }
           npcEvent.add(new Event(eo.getInt("eventID"), eo.getInt("triggerID"), text));
         }
-        npcs.add(new NPC(true, name, mainStoryNPC.getJSONObject(j).getString("position"), npcEvent, mainStoryNPC.getJSONObject(j).getJSONArray("conditions"),mainStoryNPC.getJSONObject(j).getJSONArray("endOfEvent")));
+        npcs.add(new NPC(true, name, mainStoryNPC.getJSONObject(j).getString("position"), npcEvent, mainStoryNPC.getJSONObject(j).getJSONArray("conditions"),
+        mainStoryNPC.getJSONObject(j).getJSONArray("endOfEvent"),mainStoryNPC.getJSONObject(j).getJSONObject("battleTrigger")));
       }
       JSONArray sideStoryNPC = npcObject.getJSONArray("sideCharacters");
       for (int j = 0; j < sideStoryNPC.size(); j++) {

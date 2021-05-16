@@ -104,7 +104,11 @@ public class Map {
               String[] speech = n.getSpeech();
               if(speech == null) return null;
               if(n.eventTicker>globalEventID) globalEventID = n.eventTicker;
-              return new TriggerEvent(speech);
+              TriggerEvent te = new TriggerEvent(speech);
+              if(n.canBattle && n.battleEventID == n.eventTicker && n.battleTriggerID == n.triggerTicker){
+                te.isTransition = true;
+              }
+              return te;
             }
           }
         }

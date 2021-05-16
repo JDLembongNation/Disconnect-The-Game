@@ -163,7 +163,11 @@
                     "conditions":[],
                     "endOfEvent":[
                         1
-                    ]
+                    ],
+                    "battleTrigger":{
+                        "eventID":1,
+                        "triggerID":1
+                    }
                     },
                     {
                         "name":"Joker",
@@ -239,7 +243,11 @@
                     }],
                     "endOfEvent":[
                         0
-                    ]
+                    ],
+                    "battleTrigger":{
+                        "eventID":-1,
+                        "triggerID":-1
+                    }
                     }
                 ],
                 "sideCharacters":[
