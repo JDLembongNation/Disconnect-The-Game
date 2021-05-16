@@ -25,7 +25,7 @@ void setup() {
     forestBackground[i] = loadImage("./data/opening-bg/"+i+".png");
   }
   for (int i = 0; i < 7; i++) {
-    rpgBackground[i] = loadImage("./data/background/"+i+".png");
+    rpgBackground[i] = loadImage("./data/background/1/"+i+".png");
   }
   for (int i = 0; i < 4; i++) {
     mainCharacter[i] = loadImage("./data/characters/"+i+".png");

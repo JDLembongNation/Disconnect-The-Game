@@ -87,7 +87,7 @@ public class Map {
 
     spawnTrees();
     renderCharacter();
-    spawnNPC();
+    spawnMap();
   }
 
   TriggerEvent playerInteract() {
@@ -158,6 +158,7 @@ public class Map {
     boolean isWalkable[][] = new boolean[height/unitLength][width/unitLength];
     boolean isInteractable[][] = new boolean[height/unitLength][width/unitLength];
     ArrayList<NPC> npcs = new ArrayList<NPC>();
+    ArrayList<Decor> decorations = new ArrayList<Decor>();
     MapNode top;
     MapNode left;
     MapNode right;
@@ -181,14 +182,27 @@ public class Map {
         isWalkable[i][19] = false;
       }
       //Generate NPC Location
+      addNPCs();
+      addDecor();
+    }
+    void addNPCs() {
       int npcNumber = (int) random(5);
       for (int i = 0; i < npcNumber; i++) {
         int placement = (int) random(scene.npcList.size()); //can change to pseudorandom
         if (!scene.npcList.get(placement).isInStory) {
           //generate random position within block
-          NPC npc = new NPC(scene.npcList.get(placement).isInStory,scene.npcList.get(placement).name,scene.npcList.get(placement).speech); //pass by reference. so need to instantiate new instance.
+          NPC npc = new NPC(scene.npcList.get(placement).isInStory, scene.npcList.get(placement).name, scene.npcList.get(placement).speech); //pass by reference. so need to instantiate new instance.
           npc.position = findNewPosition(1, 1);
           npcs.add(npc);
+        }
+      }
+    }
+    void addDecor() {
+      for (int i = 1; i < ((int)width/unitLength)-1; i++) {
+        for (int j = 1; j < ((int)height/unitLength)-1; j++) {
+          int randomisedNumber = (int) random(30);
+          if(randomisedNumber==12) decorations.add(new Decor(new PVector(j*unitLength, i*unitLength), rpgBackground[3]));
+          if(randomisedNumber==13) decorations.add(new Decor(new PVector(j*unitLength, i*unitLength), rpgBackground[4]));
         }
       }
     }
@@ -253,6 +267,11 @@ public class Map {
         isWalkable[18][i/30] = true;
         isWalkable[19][i/30] = true;
       }
+    }
+    class Decor{
+      PVector position;
+      PImage image;
+      public Decor(PVector position, PImage image){this.position = position;this.image=image;}
     }
   }
 
@@ -394,10 +413,13 @@ public class Map {
     fill(40, 60, 190);
     rect((playerPosition.x), (playerPosition.y), unitLength, unitLength);
   }
-  void spawnNPC() {
+  void spawnMap() {
     MapNode current = nodeMap[mapPosY][mapPosX];
     for (int i = 0; i < current.npcs.size(); i++) {
       image(mainCharacter[3], current.npcs.get(i).position.x, current.npcs.get(i).position.y);
+    }
+    for(int i = 0; i < current.decorations.size(); i++){
+      image(current.decorations.get(i).image, current.decorations.get(i).position.x,current.decorations.get(i).position.y);
     }
   }
   void renderCharacter() {
