@@ -20,17 +20,17 @@ public class NPC {
     this.eventList = eventList;  
     this.battleEventID = battleEvent.getInt("eventID");
     this.eventChanger = new int[eventChanger.size()];
-    for(int i = 0 ; i < eventChanger.size(); i++){
+    for (int i = 0; i < eventChanger.size(); i++) {
       this.eventChanger[i] = eventChanger.getInt(i);
     }
     //parse conditions.
-    for(int i = 0; i < conditions.size(); i++){
-      this.conditions.add(new Condition(conditions.getJSONObject(i).getInt("eventID"), conditions.getJSONObject(i).getInt("triggerID"),conditions.getJSONObject(i).getString("condition")));
+    for (int i = 0; i < conditions.size(); i++) {
+      this.conditions.add(new Condition(conditions.getJSONObject(i).getInt("eventID"), conditions.getJSONObject(i).getInt("triggerID"), conditions.getJSONObject(i).getString("condition")));
     }
   }
   public NPC(boolean isInStory, String name, String[] speech) {
-        this.canBattle= false;
-    
+    this.canBattle= false;
+
     this.isInStory = isInStory;
     this.speech = speech;
     this.name = name;
@@ -50,42 +50,42 @@ public class NPC {
       return speech;
     }
   }
-  
-  private void iterateTrigger(int eventID, int triggerID){
+
+  private void iterateTrigger(int eventID, int triggerID) {
     boolean canIterate = true;
-    for(int i = 0; i < conditions.size(); i++){
-      if(eventID == conditions.get(i).eventID && triggerID == conditions.get(i).triggerID){
+    for (int i = 0; i < conditions.size(); i++) {
+      if (eventID == conditions.get(i).eventID && triggerID == conditions.get(i).triggerID) {
         //Certain condition must be met to iterate
         //canIterate = false;
       }
     }
-    if(canIterate){
+    if (canIterate) {
       //check final trigger. If so, move to next event, otherwise just iterate trigger.
       boolean justIterate = false;
-      for(int i = 0; i < eventList.size(); i++){
-        if(eventID == eventList.get(i).eventID && triggerID < eventList.get(i).triggerID){
+      for (int i = 0; i < eventList.size(); i++) {
+        if (eventID == eventList.get(i).eventID && triggerID < eventList.get(i).triggerID) {
           justIterate = true;
         }
       }
-      if(justIterate) triggerTicker++;
-      else{
+      if (justIterate) triggerTicker++;
+      else {
         boolean canChangeEvent = false;
-        for(int i = 0; i < eventChanger.length; i++){ 
-          if(eventChanger[i]==eventID) canChangeEvent = true;
+        for (int i = 0; i < eventChanger.length; i++) { 
+          if (eventChanger[i]==eventID) canChangeEvent = true;
         }
-        if(canChangeEvent){
+        if (canChangeEvent) {
           eventTicker++;
           triggerTicker=0;
         } //otherwise dont change anything.
       }
     }
   }
-  
-  class Condition{
+
+  class Condition {
     int eventID;
     int triggerID;
     String condition;
-    public Condition(int eventID, int triggerID, String condition){
+    public Condition(int eventID, int triggerID, String condition) {
       this.eventID = eventID;
       this.triggerID = triggerID;
       this.condition = condition;

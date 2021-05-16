@@ -184,9 +184,9 @@ public class Map {
       int npcNumber = (int) random(5);
       for (int i = 0; i < npcNumber; i++) {
         int placement = (int) random(scene.npcList.size()); //can change to pseudorandom
-        NPC npc = scene.npcList.get(placement);
-        if (!npc.isInStory) {
+        if (!scene.npcList.get(placement).isInStory) {
           //generate random position within block
+          NPC npc = new NPC(scene.npcList.get(placement).isInStory,scene.npcList.get(placement).name,scene.npcList.get(placement).speech); //pass by reference. so need to instantiate new instance.
           npc.position = findNewPosition(1, 1);
           npcs.add(npc);
         }
