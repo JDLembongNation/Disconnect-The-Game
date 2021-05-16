@@ -21,6 +21,8 @@ public class Battle {
     } else {
       //return to RPG with appropriate sol.
       isBattleActive = false;
+      if(player.isPlayerDead()) isPlayerDead = true;
+      else isEnemyDead = true;
     }
   }
 

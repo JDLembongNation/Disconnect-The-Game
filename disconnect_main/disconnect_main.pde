@@ -44,7 +44,7 @@ void draw() {
   background(0);
   
    if(!rpg.isSceneFinished){
-   rpg.execScene(scene); //scene
+   rpg.execScene(1); //scene
    
    }else{
    scene++;

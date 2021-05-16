@@ -19,7 +19,7 @@ public class Map {
     isCompleted=false;
     playerPosition = new PVector(90, 90);
     nodeMap = new MapNode[5][5]; //Can make dynamic?
-    nodeMap[0][0] = generateNodes(new MapNode(), 0, 4, 0, 0);
+    nodeMap[0][0] = generateNodes(new MapNode(), 0, 1, 0, 0);
     displayMapNodes();
     connectNodes();
     addMainCharacters();
@@ -99,15 +99,24 @@ public class Map {
         if (nodeMap[mapPosY][mapPosX].isInteractable[relY][relX-1]) {
           for (int i = 0; i < (nodeMap[mapPosY][mapPosX].npcs.size()); i++) {
             NPC n = nodeMap[mapPosY][mapPosX].npcs.get(i);
-            if (n.position.x == ((relX-1)*unitLength) && n.position.y == (relY*unitLength)){
-              if(n.eventTicker < globalEventID) n.eventTicker = globalEventID;
+            if (n.position.x == ((relX-1)*unitLength) && n.position.y == (relY*unitLength)) {
+              if (n.eventTicker < globalEventID){
+                n.eventTicker = globalEventID;
+                n.triggerTicker = 0;
+              }
+              if (n.eventTicker>globalEventID){
+                globalEventID = n.eventTicker;
+                n.triggerTicker=0;              
+              }
               String[] speech = n.getSpeech();
-              if(speech == null) return null;
-              if(n.eventTicker>globalEventID) globalEventID = n.eventTicker;
+              if (speech == null) return null;
+              System.out.println(globalEventID + " THE GLOBAL EVENT ID");
               TriggerEvent te = new TriggerEvent(speech);
-              if(n.canBattle && n.battleEventID == n.eventTicker && n.battleTriggerID == n.triggerTicker){
+              if (n.canBattle && n.battleEventID == n.eventTicker) {
+                System.out.println("Transition was altered");
                 te.isTransition = true;
               }
+              System.out.println(n.eventTicker + " yes " + globalEventID);
               return te;
             }
           }
@@ -298,7 +307,7 @@ public class Map {
 
   MapNode generateNodes(MapNode node, int layer, int maxLayer, int posX, int posY) {
     if (layer == maxLayer) {
-      if(endNode==null) endNode = node;
+      if (endNode==null) endNode = node;
       return node;
     } else {
       int separator = (int) (random(10));
@@ -323,22 +332,22 @@ public class Map {
         }
       } else {/*
         if (nodeMap[posY][posX+1] == null) {
-          MapNode newNode = new MapNode();
-          newNode.left = node;
-          nodeMap[posY][posX+1] = newNode;
-          node.right = generateNodes(newNode, layer+1, maxLayer, posX+1, posY);
-        } else {
-          return nodeMap[posY][posX+1];
-        }
-        if (nodeMap[posY+1][posX] == null) {
-          System.out.println("Added South");
-          MapNode newNode = new MapNode();
-          nodeMap[posX][posY+1] = newNode;
-          newNode.top = node;
-          node.bottom = generateNodes(newNode, layer+1, maxLayer, posX, posY+1);
-        } else {
-          return nodeMap[posY+1][posX];
-        } */
+       MapNode newNode = new MapNode();
+       newNode.left = node;
+       nodeMap[posY][posX+1] = newNode;
+       node.right = generateNodes(newNode, layer+1, maxLayer, posX+1, posY);
+       } else {
+       return nodeMap[posY][posX+1];
+       }
+       if (nodeMap[posY+1][posX] == null) {
+       System.out.println("Added South");
+       MapNode newNode = new MapNode();
+       nodeMap[posX][posY+1] = newNode;
+       newNode.top = node;
+       node.bottom = generateNodes(newNode, layer+1, maxLayer, posX, posY+1);
+       } else {
+       return nodeMap[posY+1][posX];
+       } */
       }
     }
     return node;

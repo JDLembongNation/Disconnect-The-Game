@@ -43,7 +43,15 @@ public class RPG {
 
   private void executeScene(int scene) {
     if (this.isBattleActive) {
-      if (!battle.isBattleActive) this.isBattleActive = false;
+      if (!battle.isBattleActive){
+        this.isBattleActive = false;
+        if(battle.isPlayerDead){
+          map.globalEventID--; //Do not progress.
+        }else{
+          map.globalEventID++;
+          System.out.println("THE NEW GLOBAL ID:" + map.globalEventID);
+        }
+      }
       else battle.run();
     } else {
       if (!isMapGenerated) {
@@ -81,6 +89,7 @@ public class RPG {
             isTextBoxActive =false;
             iterators[7] = 0;
             if (trigger.isTransition) {
+              System.out.println("Battle Triggerd");
               triggerBattle();
             }
           } else if (iterators[7] <trigger.text.length-1)iterators[7]++;

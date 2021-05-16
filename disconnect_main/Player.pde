@@ -32,14 +32,14 @@ public class Player{
   }
   
   boolean isPlayerDead(){
-    return false;
+    return isDead;
   }
   void deductLife(){ //make player temporarily invincible so they have chance to regain.
     if(millis() > timers[6]){
       lives--;
-      timers[6]+=millis()+100;
+      timers[6]=millis()+1000;
       if(lives <=0){
-        //GAME OVER. CALL. 
+        isDead = true;
       }
     }
   }

@@ -5,7 +5,6 @@ public class NPC {
   boolean isInStory;
   boolean canBattle;
   int battleEventID;
-  int battleTriggerID;
   int eventTicker = 0;
   int triggerTicker = 0;
   int[] eventChanger;
@@ -20,7 +19,6 @@ public class NPC {
     this.initialPosition = initialPosition;
     this.eventList = eventList;  
     this.battleEventID = battleEvent.getInt("eventID");
-    this.battleTriggerID = battleEvent.getInt("triggerID");
     this.eventChanger = new int[eventChanger.size()];
     for(int i = 0 ; i < eventChanger.size(); i++){
       this.eventChanger[i] = eventChanger.getInt(i);
@@ -59,7 +57,6 @@ public class NPC {
       if(eventID == conditions.get(i).eventID && triggerID == conditions.get(i).triggerID){
         //Certain condition must be met to iterate
         //canIterate = false;
-        
       }
     }
     if(canIterate){
@@ -73,7 +70,7 @@ public class NPC {
       if(justIterate) triggerTicker++;
       else{
         boolean canChangeEvent = false;
-        for(int i = 0; i < eventChanger.length; i++){
+        for(int i = 0; i < eventChanger.length; i++){ 
           if(eventChanger[i]==eventID) canChangeEvent = true;
         }
         if(canChangeEvent){

@@ -162,11 +162,10 @@
                     ],
                     "conditions":[],
                     "endOfEvent":[
-                        1
+                        
                     ],
                     "battleTrigger":{
-                        "eventID":1,
-                        "triggerID":1
+                        "eventID":1
                     }
                     },
                     {
@@ -245,8 +244,7 @@
                         0
                     ],
                     "battleTrigger":{
-                        "eventID":-1,
-                        "triggerID":-1
+                        "eventID":-1
                     }
                     }
                 ],
