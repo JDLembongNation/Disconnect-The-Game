@@ -1,4 +1,4 @@
-   public class Event{
+public class Event{
     int eventID;
     int triggerID;
     String[] text;

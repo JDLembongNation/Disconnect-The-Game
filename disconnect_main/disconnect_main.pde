@@ -9,7 +9,7 @@ PImage battleImages[];
 float timers[];
 int iterators[];
 boolean keys[];
-Battle b;
+Battle battle;
 void setup() {
   size(600, 600);
   keys = new boolean[6];
@@ -33,8 +33,8 @@ void setup() {
   timers = new float[15];
   iterators = new int[8];
   scene = 0;
-  b = new Battle();
-  b.initialize(new Player(3), new Boss_Chapter_1(null, new PVector(300, 200), 2, 100));
+  battle = new Battle();
+  battle.initialize(new Player(3), new Boss_Chapter_1(null, new PVector(300, 200), 2, 100));
 }
 
 void draw() {  
@@ -59,7 +59,7 @@ void keyPressed() {
     }
     if (key == 'm') keys[4] = true;
   }
-  if (b.isBattleActive) if (key == ' ') keys[5] = true;
+  if (battle.isBattleActive) if (key == ' ') keys[5] = true;
   if (keyCode == LEFT) keys[0] = true;
   if (keyCode == UP) keys[1] = true;
   if (keyCode == RIGHT) keys[2] = true;
@@ -74,5 +74,5 @@ void keyReleased() {
   if (keyCode == UP) keys[1] = false;
   if (keyCode == RIGHT) keys[2] = false;
   if (keyCode == DOWN) keys[3] = false;
-  if (b.isBattleActive) if (key == ' ') keys[5] = false;
+  if (battle.isBattleActive) if (key == ' ') keys[5] = false;
 }

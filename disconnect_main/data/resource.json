@@ -122,13 +122,13 @@
                         "name":"Monk Ji Gong",
                         "position":"end",
                         "event":[{
-                            "eventID":1,
+                            "eventID":0,
                             "triggerID":0,
                             "text":["zzz..."]
                         },
                             {
                             "eventID":1,
-                            "triggerID":1,
+                            "triggerID":0,
                             "text":[
                                 "... ... Ah.",
                                 "Seems that liquor hit me hard earlier haha. Phew...",
@@ -146,12 +146,23 @@
                         },
                         {
                             "eventID":1,
-                            "triggerID":2,
+                            "triggerID":1,
                             "text":[
                                 "Your determination will bear fruit.",
                                 "Unless you're dead!"
                             ]
+                        },
+                        {
+                            "eventID":2,
+                            "triggerID":0,
+                            "text":[
+                                "Well shit.."
+                            ]
                         }
+                    ],
+                    "conditions":[],
+                    "endOfEvent":[
+                        1
                     ]
                     },
                     {
@@ -201,10 +212,33 @@
                                     "Get my items will you?"]
                         },
                         {
-                            "eventID":0,
-                            "triggerID":2,
+                            "eventID":1,
+                            "triggerID":0,
                             "text":["Fantastic!!!"]
+                        },
+                        {
+                            "eventID":1,
+                            "triggerID":1,
+                            "text":["Goodluck my dude."]
+                        },
+                        {
+                            "eventID":2,
+                            "triggerID":0,
+                            "text":["Oooh I saw that battle, that looked kinda painful. I hope you're alright haha."]
+                        },
+                        {
+                            "eventID":3,
+                            "triggerID":0,
+                            "text":["Wow you managed to beat Ji Gong. I took notes on how you dodged those energy balls.",
+                            "I'll be coming right behind you! HAHA"]
                         }
+                    ],"conditions":[{
+                        "eventID":0,
+                        "triggerID":1,
+                        "condition":"itemFind"
+                    }],
+                    "endOfEvent":[
+                        0
                     ]
                     }
                 ],

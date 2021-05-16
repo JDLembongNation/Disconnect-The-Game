@@ -1,6 +1,7 @@
 //To be called when the player hits something in the RPG.
 public class TriggerEvent{
   String[] text;
+  boolean isTransition;
   //Item
   //Stat changes 
   //Any upgrades? 

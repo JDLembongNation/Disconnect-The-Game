@@ -6,6 +6,7 @@ public class RPG {
   boolean isSceneFinished;
   boolean isTextBoxActive = false;
   boolean isInteractionActive = false;
+  boolean isBattleActive = false;
   TriggerEvent trigger;
   boolean showNextText;
   float timeStamp;
@@ -37,44 +38,57 @@ public class RPG {
   }
 
   private void executeScene(int scene) {
-    if (!isMapGenerated) {
-      map = new Map(scenes.get(scene));
-      isMapGenerated = true;
-    }
-    if (map.isCompleted) {
-      isMapGenerated = false;
-      //Move on to the next scene here.
-    }
-    map.render();
-    //Execute Player Movements. 
-    if (keys[0])map.playerMovement(0);
-    if (keys[1])map.playerMovement(1);
-    if (keys[2])map.playerMovement(2);
-    if (keys[3])map.playerMovement(3);
-    if (keys[4]) {
-      if (timers[14] < millis()) {
-        timers[14] = millis()+100;
-        if (!isInteractionActive) {
-          trigger = map.playerInteract();
-          if (trigger!=null) {
-            isInteractionActive=true;
-            isTextBoxActive=true;
+    if (this.isBattleActive) {
+      if(!battle.isBattleActive) this.isBattleActive = false;
+      else battle.run();
+    } else {
+      if (!isMapGenerated) {
+        map = new Map(scenes.get(scene));
+        isMapGenerated = true;
+      }
+      if (map.isCompleted) {
+        isMapGenerated = false;
+        //Move on to the next scene here.
+      }
+      map.render();
+      //Execute Player Movements. 
+      if (keys[0])map.playerMovement(0);
+      if (keys[1])map.playerMovement(1);
+      if (keys[2])map.playerMovement(2);
+      if (keys[3])map.playerMovement(3);
+      if (keys[4]) {
+        if (timers[14] < millis()) {
+          timers[14] = millis()+100;
+          if (!isInteractionActive) {
+            trigger = map.playerInteract();
+            if (trigger!=null) {
+              isInteractionActive=true;
+              isTextBoxActive=true;
+            }
           }
         }
       }
-    }
-    if (isTextBoxActive) {
-      showTextBox(trigger.text[iterators[7]]);
-      if (showNextText) {
-        if (iterators[7] == trigger.text.length-1) {
-          isInteractionActive = false;
-          isTextBoxActive =false;
-          iterators[7] = 0;
+      if (isTextBoxActive) {
+
+        showTextBox(trigger.text[iterators[7]]);
+        if (showNextText) {
+          if (iterators[7] == trigger.text.length-1) {
+            isInteractionActive = false;
+            isTextBoxActive =false;
+            iterators[7] = 0;
+            if (trigger.isTransition) {
+              triggerBattle();
+            }
+          } else if (iterators[7] <trigger.text.length-1)iterators[7]++;
+          showNextText = false;
         }
-        if (iterators[7] <trigger.text.length-1) iterators[7]++;
-        showNextText = false;
       }
     }
+  }
+
+  public void triggerBattle() {
+    battle.initialize(new Player(3), new Boss_Chapter_1(null, new PVector(300, 200), 2, 100)); // Change this later.
+    isBattleActive = true;
   }
 
   //Have a separate function call for opening scene as there are a lot of cutscenes. 
@@ -192,16 +206,16 @@ public class RPG {
         String name = mainStoryNPC.getJSONObject(j).getString("name");
         JSONArray e = mainStoryNPC.getJSONObject(j).getJSONArray("event");
         ArrayList<Event> npcEvent = new ArrayList<Event>();
-        for(int k = 0; k < e.size(); k++){
+        for (int k = 0; k < e.size(); k++) {
           JSONObject eo = e.getJSONObject(k);
           JSONArray mainText = eo.getJSONArray("text");
           String[] text = new String[mainText.size()];
-          for(int l = 0; l < mainText.size(); l++){
+          for (int l = 0; l < mainText.size(); l++) {
             text[l] = mainText.getString(l);
           }
           npcEvent.add(new Event(eo.getInt("eventID"), eo.getInt("triggerID"), text));
         }
-        npcs.add(new NPC(true,name,mainStoryNPC.getJSONObject(j).getString("position"), npcEvent));
+        npcs.add(new NPC(true, name, mainStoryNPC.getJSONObject(j).getString("position"), npcEvent, mainStoryNPC.getJSONObject(j).getJSONArray("conditions"),mainStoryNPC.getJSONObject(j).getJSONArray("endOfEvent")));
       }
       JSONArray sideStoryNPC = npcObject.getJSONArray("sideCharacters");
       for (int j = 0; j < sideStoryNPC.size(); j++) {

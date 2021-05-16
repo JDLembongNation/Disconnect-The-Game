@@ -1,5 +1,6 @@
 import java.util.*; //<>// //<>//
 public class Map {
+  int globalEventID;
   Scene scene;
   final int unitLength = 30;
   PVector playerPosition;
@@ -8,8 +9,11 @@ public class Map {
   int currentPosition = 0;
   int mapPosX;
   int mapPosY;
+  MapNode endNode;
   public Map(Scene scene) {
+    this.endNode = null;
     this.scene = scene;
+    globalEventID = 0;
     mapPosX = 0;
     mapPosY = 0;
     isCompleted=false;
@@ -95,7 +99,13 @@ public class Map {
         if (nodeMap[mapPosY][mapPosX].isInteractable[relY][relX-1]) {
           for (int i = 0; i < (nodeMap[mapPosY][mapPosX].npcs.size()); i++) {
             NPC n = nodeMap[mapPosY][mapPosX].npcs.get(i);
-            if (n.position.x == ((relX-1)*unitLength) && n.position.y == (relY*unitLength)) return new TriggerEvent(n.getSpeech());
+            if (n.position.x == ((relX-1)*unitLength) && n.position.y == (relY*unitLength)){
+              if(n.eventTicker < globalEventID) n.eventTicker = globalEventID;
+              String[] speech = n.getSpeech();
+              if(speech == null) return null;
+              if(n.eventTicker>globalEventID) globalEventID = n.eventTicker;
+              return new TriggerEvent(speech);
+            }
           }
         }
       }
@@ -236,6 +246,9 @@ public class Map {
           }
         case "end":
           {
+            NPC character = scene.npcList.get(i);
+            character.position = endNode.findNewPosition(1, 2);
+            endNode.npcs.add(character);
             break;
           }
         default: 
@@ -281,10 +294,11 @@ public class Map {
 
   MapNode generateNodes(MapNode node, int layer, int maxLayer, int posX, int posY) {
     if (layer == maxLayer) {
+      if(endNode==null) endNode = node;
       return node;
     } else {
       int separator = (int) (random(10));
-      if (separator%3 == 0) {
+      if (separator%2 == 0) {
         if (nodeMap[posY+1][posX]==null) {
           System.out.println("Added South");
           MapNode newNode = new MapNode();
@@ -294,7 +308,7 @@ public class Map {
         } else {
           return nodeMap[posY+1][posX];
         }
-      } else if (separator%3 == 1) {
+      } else if (separator%2 == 1) {
         if (nodeMap[posY][posX+1]==null) {
           MapNode newNode = new MapNode();
           newNode.left = node;
@@ -303,7 +317,7 @@ public class Map {
         } else {
           return nodeMap[posY][posX+1];
         }
-      } else {
+      } else {/*
         if (nodeMap[posY][posX+1] == null) {
           MapNode newNode = new MapNode();
           newNode.left = node;
@@ -320,7 +334,7 @@ public class Map {
           node.bottom = generateNodes(newNode, layer+1, maxLayer, posX, posY+1);
         } else {
           return nodeMap[posY+1][posX];
-        }
+        } */
       }
     }
     return node;

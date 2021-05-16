@@ -20,6 +20,7 @@ public class Battle {
       bs.run(player, enemy, 10, 20);
     } else {
       //return to RPG with appropriate sol.
+      isBattleActive = false;
     }
   }
 
