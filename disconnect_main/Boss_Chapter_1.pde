@@ -22,7 +22,7 @@ public class Boss_Chapter_1 extends Enemy{
       }
       if(super.lives == 2){
         spellCard1(bs);
-        moveAnimation("Ripples Of Time");
+                moveAnimation("Ripples Of Time");
       }
       if(super.lives == 1){
         moveAnimation("Final Fight");

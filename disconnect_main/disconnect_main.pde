@@ -3,6 +3,7 @@ RPG rpg;
 int scene;
 PImage openingBG;
 PImage forestBackground[];
+PImage transitionBackground[];
 PImage rpgBackground[];
 PImage mainCharacter[];
 PImage battleImages[];
@@ -16,6 +17,8 @@ void setup() {
   font = createFont("monogram.ttf", 30);
   rpg = new RPG(loadJSONObject("./data/resource.json"));
   forestBackground = new PImage[5];
+  transitionBackground = new PImage[1];
+  transitionBackground[0] = loadImage("./data/transition/1.png");
   rpgBackground = new PImage[7];
   mainCharacter = new PImage[4];
   for (int i = 0; i < 5; i++) {
@@ -30,7 +33,7 @@ void setup() {
   openingBG = loadImage("./data/opening-bg/cyberpunk-street.png");
   battleImages = new PImage[1];
   battleImages[0] = loadImage("./data/battle/bg-1.png");
-  timers = new float[15];
+  timers = new float[16];
   iterators = new int[8];
   scene = 0;
   battle = new Battle();
@@ -41,7 +44,7 @@ void draw() {
   background(0);
   
    if(!rpg.isSceneFinished){
-   rpg.execScene(1); //scene
+   rpg.execScene(scene); //scene
    
    }else{
    scene++;

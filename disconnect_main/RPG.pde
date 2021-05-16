@@ -1,8 +1,12 @@
 public class RPG {
   final int CITY_ITERATOR = 0;
+  int alpha = 255;
   ArrayList<Scene> scenes;
+  boolean reverse = false;
+  boolean transitionComplete = false;
   boolean isRPGActive;
   boolean isCityEventFinished;
+  boolean isForestEventFinished;
   boolean isSceneFinished;
   boolean isTextBoxActive = false;
   boolean isInteractionActive = false;
@@ -39,7 +43,7 @@ public class RPG {
 
   private void executeScene(int scene) {
     if (this.isBattleActive) {
-      if(!battle.isBattleActive) this.isBattleActive = false;
+      if (!battle.isBattleActive) this.isBattleActive = false;
       else battle.run();
     } else {
       if (!isMapGenerated) {
@@ -97,9 +101,17 @@ public class RPG {
     if (!isSceneFinished) {
       if (!isCityEventFinished)
         cityEvent();
-      else 
-      forestEvent();
+      else {
+        if(!isForestEventFinished){
+          forestEvent();
+        }else{
+          if(!transitionComplete)
+          showChapter();
+          else isSceneFinished = true;
+        }
+      }
     }
+    //Transition.
   }
 
   private void cityEvent() {
@@ -126,7 +138,7 @@ public class RPG {
     showTextBox(event.text[iterators[6]]);
     if (showNextText) {
       if (iterators[6] == maxTextSlot-1) {
-        isSceneFinished=true;
+        isForestEventFinished=true;
       } else if (iterators[6] < maxTextSlot-1) {
         iterators[6] +=1;
       }
@@ -184,6 +196,33 @@ public class RPG {
     text(input, 60, 460, 480, 80);
   }
 
+  private void showChapter() {
+    if (timers[15] < millis()) {
+      if (!reverse) {
+        if (alpha>4) {
+          alpha-=3;
+          timers[15] = millis()+10;
+        }else{
+          timers[15] = millis()+3000;
+          reverse = true;
+        }
+      } else {
+        if(alpha < 240){
+          alpha+=2;
+          timers[15] = millis()+10;
+        }else{
+          alpha = 255;
+          transitionComplete = true;
+        }
+      }
+    }
+    noStroke();
+    image(transitionBackground[0], 0, 0);
+    fill(0, alpha);
+    rect(0, 0, 600, 600);
+    stroke(0);
+  }
+
   private void parseJSON(JSONObject json) {
     JSONArray s = json.getJSONArray("scene");
     for (int i = 0; i < s.size(); i++) {
@@ -215,8 +254,8 @@ public class RPG {
           }
           npcEvent.add(new Event(eo.getInt("eventID"), eo.getInt("triggerID"), text));
         }
-        npcs.add(new NPC(true, name, mainStoryNPC.getJSONObject(j).getString("position"), npcEvent, mainStoryNPC.getJSONObject(j).getJSONArray("conditions"),
-        mainStoryNPC.getJSONObject(j).getJSONArray("endOfEvent"),mainStoryNPC.getJSONObject(j).getJSONObject("battleTrigger")));
+        npcs.add(new NPC(true, name, mainStoryNPC.getJSONObject(j).getString("position"), npcEvent, mainStoryNPC.getJSONObject(j).getJSONArray("conditions"), 
+          mainStoryNPC.getJSONObject(j).getJSONArray("endOfEvent"), mainStoryNPC.getJSONObject(j).getJSONObject("battleTrigger")));
       }
       JSONArray sideStoryNPC = npcObject.getJSONArray("sideCharacters");
       for (int j = 0; j < sideStoryNPC.size(); j++) {
