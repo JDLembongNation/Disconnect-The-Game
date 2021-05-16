@@ -66,7 +66,7 @@ public class Map {
         }
       case 3: 
         {
-          if (playerPosition.y < height-unitLength*2 && nodeMap[mapPosY][mapPosX].isWalkable[((int)playerPosition.y/30)+1][((int)playerPosition.x/30)-1])playerPosition.y +=unitLength;
+          if (playerPosition.y < height-unitLength*2 && nodeMap[mapPosY][mapPosX].isWalkable[((int)playerPosition.y/30)+1][((int)playerPosition.x/30)])playerPosition.y +=unitLength;
           if (playerPosition.y == height-unitLength*2) {
             playerPosition.y = unitLength*2;
             mapPosY++;
@@ -100,13 +100,13 @@ public class Map {
           for (int i = 0; i < (nodeMap[mapPosY][mapPosX].npcs.size()); i++) {
             NPC n = nodeMap[mapPosY][mapPosX].npcs.get(i);
             if (n.position.x == ((relX-1)*unitLength) && n.position.y == (relY*unitLength)) {
-              if (n.eventTicker < globalEventID){
+              if (n.eventTicker < globalEventID) {
                 n.eventTicker = globalEventID;
                 n.triggerTicker = 0;
               }
-              if (n.eventTicker>globalEventID){
+              if (n.eventTicker>globalEventID) {
                 globalEventID = n.eventTicker;
-                n.triggerTicker=0;              
+                n.triggerTicker=0;
               }
               String[] speech = n.getSpeech();
               if (speech == null) return null;
@@ -368,7 +368,6 @@ public class Map {
       line(0, i, 600, i);
     }
     //debug. 
-
     boolean[][] walk = nodeMap[mapPosY][mapPosX].isWalkable;
     for (int i = 0; i < walk.length; i++) {
       for (int j = 0; j < walk[i].length; j++) {
@@ -378,6 +377,8 @@ public class Map {
         }
       }
     }
+    fill(40, 60, 190);
+    rect((playerPosition.x), (playerPosition.y), unitLength, unitLength);
   }
   void spawnNPC() {
     MapNode current = nodeMap[mapPosY][mapPosX];
