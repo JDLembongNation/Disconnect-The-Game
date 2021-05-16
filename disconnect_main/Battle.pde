@@ -6,6 +6,8 @@ public class Battle {
   Enemy enemy;
   boolean isBattleActive;
   void initialize(Player player, Enemy enemy) {
+    isPlayerDead = false;
+    isEnemyDead = false;
     this.player = player;
     this.enemy = enemy;
     bs = new BulletSystem();

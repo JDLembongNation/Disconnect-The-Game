@@ -50,8 +50,6 @@ void draw() {
    scene++;
    rpg.isSceneFinished=false;
    }
-   
-  //b.run();
 }
 
 void keyPressed() {

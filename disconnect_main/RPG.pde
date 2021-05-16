@@ -46,7 +46,6 @@ public class RPG {
       if (!battle.isBattleActive){
         this.isBattleActive = false;
         if(battle.isPlayerDead){
-          map.globalEventID--; //Do not progress.
         }else{
           map.globalEventID++;
           System.out.println("THE NEW GLOBAL ID:" + map.globalEventID);
