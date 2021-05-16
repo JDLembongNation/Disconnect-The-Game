@@ -19,7 +19,7 @@ public class Map {
     isCompleted=false;
     playerPosition = new PVector(90, 90);
     nodeMap = new MapNode[5][5]; //Can make dynamic?
-    nodeMap[0][0] = generateNodes(new MapNode(), 0, 1, 0, 0);
+    nodeMap[0][0] = generateNodes(new MapNode(), 0, 4, 0, 0);
     displayMapNodes();
     connectNodes();
     addMainCharacters();
@@ -97,44 +97,58 @@ public class Map {
     case 0:
       {
         if (nodeMap[mapPosY][mapPosX].isInteractable[relY][relX-1]) {
-          for (int i = 0; i < (nodeMap[mapPosY][mapPosX].npcs.size()); i++) {
-            NPC n = nodeMap[mapPosY][mapPosX].npcs.get(i);
-            if (n.position.x == ((relX-1)*unitLength) && n.position.y == (relY*unitLength)) {
-              if (n.eventTicker < globalEventID) {
-                n.eventTicker = globalEventID;
-                n.triggerTicker = 0;
-              }
-              if (n.eventTicker>globalEventID) {
-                globalEventID = n.eventTicker;
-                n.triggerTicker=0;
-              }
-              String[] speech = n.getSpeech();
-              if (speech == null) return null;
-              System.out.println(globalEventID + " THE GLOBAL EVENT ID");
-              TriggerEvent te = new TriggerEvent(speech);
-              if (n.canBattle && n.battleEventID == n.eventTicker) {
-                System.out.println("Transition was altered");
-                te.isTransition = true;
-              }
-              System.out.println(n.eventTicker + " yes " + globalEventID);
-              return te;
-            }
-          }
+          return determineEvent(relX-1, relY);
         }
       }
       break;
     case 1:
       {
+        if (nodeMap[mapPosY][mapPosX].isInteractable[relY-1][relX]) {
+          return determineEvent(relX, relY-1);
+        }
       }
       break;
     case 2:
       {
+        if (nodeMap[mapPosY][mapPosX].isInteractable[relY][relX+1]) {
+          return determineEvent(relX+1, relY);
+        }
       }
       break;
     case 3:
       {
+        if (nodeMap[mapPosY][mapPosX].isInteractable[relY+1][relX]) {
+          return determineEvent(relX, relY+1);
+        }
       }
       break;
+    }
+    return null;
+  }
+
+  TriggerEvent determineEvent(int relX, int relY) {
+    for (int i = 0; i < (nodeMap[mapPosY][mapPosX].npcs.size()); i++) {
+      NPC n = nodeMap[mapPosY][mapPosX].npcs.get(i);
+      if (n.position.x == ((relX)*unitLength) && n.position.y == (relY*unitLength)) {
+        if (n.eventTicker < globalEventID) {
+          n.eventTicker = globalEventID;
+          n.triggerTicker = 0;
+        }
+        if (n.eventTicker>globalEventID) {
+          globalEventID = n.eventTicker;
+          n.triggerTicker=0;
+        }
+        String[] speech = n.getSpeech();
+        if (speech == null) return null;
+        System.out.println(globalEventID + " THE GLOBAL EVENT ID");
+        TriggerEvent te = new TriggerEvent(speech);
+        if (n.canBattle && n.battleEventID == n.eventTicker) {
+          System.out.println("Transition was altered");
+          te.isTransition = true;
+        }
+        System.out.println(n.eventTicker + " yes " + globalEventID);
+        return te;
+      }
     }
     return null;
   }
@@ -173,7 +187,7 @@ public class Map {
         NPC npc = scene.npcList.get(placement);
         if (!npc.isInStory) {
           //generate random position within block
-          npc.position = findNewPosition(1, 2);
+          npc.position = findNewPosition(1, 1);
           npcs.add(npc);
         }
       }
@@ -249,7 +263,7 @@ public class Map {
         case "start": 
           {
             NPC character = scene.npcList.get(i);
-            character.position = nodeMap[0][0].findNewPosition(1, 2);
+            character.position = nodeMap[0][0].findNewPosition(1, 1);
             nodeMap[0][0].npcs.add(character);
             break;
           }
@@ -260,7 +274,7 @@ public class Map {
         case "end":
           {
             NPC character = scene.npcList.get(i);
-            character.position = endNode.findNewPosition(1, 2);
+            character.position = endNode.findNewPosition(1, 1);
             endNode.npcs.add(character);
             break;
           }
