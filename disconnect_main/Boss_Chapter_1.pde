@@ -87,8 +87,12 @@ public class Boss_Chapter_1 extends Enemy{
       theta[1] +=ratios[1];
       if(theta[0] > 2*PI) theta[0]-=2*PI;
       if(theta[1] > 2*PI) theta[1]-=2*PI;
-      bs.addBullet(new Bullet(super.position, theta[0], 30, 3-(super.lives)));
-      bs.addBullet(new Bullet(super.position, theta[1], 30, 5-(super.lives)));
+      Bullet b1 = new Bullet(super.position, theta[0], 30, 3-(super.lives));
+      Bullet b2 = new Bullet(super.position, theta[1], 30, 5-(super.lives));
+      b1.addColour(255,255,255);
+      b2.addColour(146,55,77);
+      bs.addBullet(b1);
+      bs.addBullet(b2);
     
   }
   

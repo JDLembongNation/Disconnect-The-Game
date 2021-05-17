@@ -5,6 +5,10 @@ public class Bullet{
   PVector adder;
   boolean wait;
   boolean isPlayerBullet;
+  boolean addCustomColour = false;
+  int r;
+  int g;
+  int b;
   int life = 0; //How many times can the bullet bounce off the wall, if the bullet is to die immediately after launching, set this to 1.
   
   //Constructor for straight bullets. --> Firing in a predefined linear direction
@@ -53,7 +57,12 @@ public class Bullet{
     }
     wait = false;
   }
-  
+  public void addColour(int r, int g, int b){
+    this.r = r;
+    this.g = g;
+    this.b = b;
+    this.addCustomColour = true;
+  }
   public void setLife(int life){this.life = life;}
   
   public void displayRegularBullet(){
@@ -65,6 +74,12 @@ public class Bullet{
     stroke(255);
     fill(255, alpha);
     ellipse(position.x, position.y, 8, 8);
+  }
+     public void displayRegularColouredBullet(){
+    noStroke();
+    fill(r,g,b);
+    ellipse(position.x, position.y, 8, 8);
+    stroke(255);
   }
   public void setToPlayerBullet(){isPlayerBullet = true;}
   public void update(){

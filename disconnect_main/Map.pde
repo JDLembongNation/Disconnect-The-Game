@@ -83,7 +83,7 @@ public class Map {
     //Display all the assets etc. 
     //hard code for now. 
     spawnFloor(0);
-    spawnLines();
+    //spawnLines();
 
     spawnTrees();
     renderCharacter();
@@ -159,6 +159,7 @@ public class Map {
     boolean isInteractable[][] = new boolean[height/unitLength][width/unitLength];
     ArrayList<NPC> npcs = new ArrayList<NPC>();
     ArrayList<Decor> decorations = new ArrayList<Decor>();
+    ArrayList<House> houses = new ArrayList<House>();
     MapNode top;
     MapNode left;
     MapNode right;
@@ -184,6 +185,7 @@ public class Map {
       //Generate NPC Location
       addNPCs();
       addDecor();
+      addHouses();
     }
     void addNPCs() {
       int npcNumber = (int) random(5);
@@ -193,8 +195,15 @@ public class Map {
           //generate random position within block
           NPC npc = new NPC(scene.npcList.get(placement).isInStory, scene.npcList.get(placement).name, scene.npcList.get(placement).speech); //pass by reference. so need to instantiate new instance.
           npc.position = findNewPosition(1, 1);
-          npcs.add(npc);
+          if(npc.position!=null) npcs.add(npc);
         }
+      }
+    }
+    void addHouses(){
+      int houseNumber = (int) random(5);
+      for(int i = 0; i < houseNumber;i++){
+        House house = new House(findNewPosition(3,4), rpgBackground[1],3,4);
+        if(house.position!=null)houses.add(house);
       }
     }
     void addDecor() {
@@ -207,10 +216,11 @@ public class Map {
       }
     }
     PVector findNewPosition(int x, int y) {
+      int attempts=20;
       boolean found = false;
       int placeX = 0;
       int placeY = 0;
-      while (!found) {
+      while (!found && attempts > 0) {
         boolean intercept = false;
         placeX = ((int) random(15))+2;
         placeY = ((int) random(15))+2;
@@ -220,7 +230,9 @@ public class Map {
           }
         }
         if (!intercept) found =true;
+        attempts--;
       }
+      if(attempts == 0) return null;
       for (int i = 0; i < y; i++) {
         for (int j = 0; j < x; j++) {
           isWalkable[placeY+i][placeX+j] = false;
@@ -272,6 +284,13 @@ public class Map {
       PVector position;
       PImage image;
       public Decor(PVector position, PImage image){this.position = position;this.image=image;}
+    }
+    class House{
+      PVector position;
+      PImage image;
+      int houseWidth;
+      int houseHeight;
+      public House(PVector position, PImage image, int houseWidth, int houseHeight){this.position = position; this.image = image; this.houseWidth = houseWidth; this.houseHeight= houseHeight;}
     }
   }
 
@@ -413,6 +432,7 @@ public class Map {
     fill(40, 60, 190);
     rect((playerPosition.x), (playerPosition.y), unitLength, unitLength);
   }
+  
   void spawnMap() {
     MapNode current = nodeMap[mapPosY][mapPosX];
     for (int i = 0; i < current.npcs.size(); i++) {
@@ -421,14 +441,18 @@ public class Map {
     for(int i = 0; i < current.decorations.size(); i++){
       image(current.decorations.get(i).image, current.decorations.get(i).position.x,current.decorations.get(i).position.y);
     }
+    for(int i = 0; i < current.houses.size(); i++){
+      image(current.houses.get(i).image,current.houses.get(i).position.x,current.houses.get(i).position.y);
+    }
   }
+  
   void renderCharacter() {
     image(mainCharacter[currentPosition], playerPosition.x, playerPosition.y);
   }
+  
   //Take Current Node and separation.
   void spawnTrees() {
     MapNode current = nodeMap[mapPosY][mapPosX];
-
     for (int i = 0; i < height; i+=unitLength*2) {
       if (!(current.hasEntryPoint[0] && i >= current.entryPoints[0] && i <= current.entryPoints[1])) {
         image(rpgBackground[2], 0, i);

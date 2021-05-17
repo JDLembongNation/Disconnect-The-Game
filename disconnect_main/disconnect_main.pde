@@ -42,7 +42,7 @@ void setup() {
 
 void draw() {  
   background(0);
-  
+  /*
    if(!rpg.isSceneFinished){
    rpg.execScene(1); //scene
    
@@ -50,6 +50,8 @@ void draw() {
    scene++;
    rpg.isSceneFinished=false;
    }
+   */
+   battle.run();
 }
 
 void keyPressed() {

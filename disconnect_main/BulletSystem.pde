@@ -24,7 +24,8 @@ public class BulletSystem{
       Bullet b = bullets.get(i);
       b.update();
       if(!b.isPlayerBullet){
-         b.displayRegularBullet();
+        if(b.addCustomColour) b.displayRegularColouredBullet();
+         else b.displayRegularBullet();
       if(inRegion(b.position, player.position, playerConstraints)){
         player.deductLife();
         }
