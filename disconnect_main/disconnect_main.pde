@@ -42,16 +42,16 @@ void setup() {
 
 void draw() {  
   background(0);
-  /*
+  
    if(!rpg.isSceneFinished){
-   rpg.execScene(1); //scene
+   rpg.execScene(scene); //scene
    
    }else{
    scene++;
    rpg.isSceneFinished=false;
    }
-   */
-   battle.run();
+   
+   //battle.run();
 }
 
 void keyPressed() {
