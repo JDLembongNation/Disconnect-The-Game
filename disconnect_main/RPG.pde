@@ -4,6 +4,10 @@ public class RPG {
   ArrayList<Scene> scenes;
   boolean reverse = false;
   boolean transitionComplete = false;
+  String currentText = "";
+  char[] currentCharText;
+  String textString = "";
+  int textBoxIterator;
   boolean isRPGActive;
   boolean isCityEventFinished;
   boolean isForestEventFinished;
@@ -43,15 +47,14 @@ public class RPG {
 
   private void executeScene(int scene) {
     if (this.isBattleActive) {
-      if (!battle.isBattleActive){
+      if (!battle.isBattleActive) {
         this.isBattleActive = false;
-        if(battle.isPlayerDead){
-        }else{
+        if (battle.isPlayerDead) {
+        } else {
           map.globalEventID++;
           System.out.println("THE NEW GLOBAL ID:" + map.globalEventID);
         }
-      }
-      else battle.run();
+      } else battle.run();
     } else {
       if (!isMapGenerated) {
         map = new Map(scenes.get(scene));
@@ -80,7 +83,7 @@ public class RPG {
         }
       }
       if (isTextBoxActive) {
-
+        if(trigger.name!=null) showNameBox(trigger.name);
         showTextBox(trigger.text[iterators[7]]);
         if (showNextText) {
           if (iterators[7] == trigger.text.length-1) {
@@ -110,11 +113,11 @@ public class RPG {
       if (!isCityEventFinished)
         cityEvent();
       else {
-        if(!isForestEventFinished){
+        if (!isForestEventFinished) {
           forestEvent();
-        }else{
-          if(!transitionComplete)
-          showChapter();
+        } else {
+          if (!transitionComplete)
+            showChapter();
           else isSceneFinished = true;
         }
       }
@@ -197,11 +200,33 @@ public class RPG {
   }
 
   private void showTextBox(String input) {
+    String resultant = "";
+    if (input.equals(currentText)) {
+      for (int i = 0; i < textBoxIterator; i++) {
+        resultant += currentCharText[i];
+      }
+      if (timers[16] < millis()) { //add letter
+        if (textBoxIterator < input.length())
+          textBoxIterator++;
+        timers[16] = millis()+5;
+      }
+    } else {
+      currentText = input;
+      currentCharText = input.toCharArray();
+      textBoxIterator = 0;
+    }
     fill(255, 180);
     rect(50, 450, 500, 100);
     fill(0);
     textFont(font);
-    text(input, 60, 460, 480, 80);
+    text(resultant, 60, 460, 480, 80);
+  }
+  private void showNameBox(String name) {
+    fill(255, 180);
+    rect(50, 410, 200, 40);
+    fill(0);
+    textFont(font);
+    text(name, 55, 415, 190, 25);
   }
 
   private void showChapter() {
@@ -210,15 +235,15 @@ public class RPG {
         if (alpha>4) {
           alpha-=3;
           timers[15] = millis()+10;
-        }else{
+        } else {
           timers[15] = millis()+3000;
           reverse = true;
         }
       } else {
-        if(alpha < 240){
+        if (alpha < 240) {
           alpha+=2;
           timers[15] = millis()+10;
-        }else{
+        } else {
           alpha = 255;
           transitionComplete = true;
         }
@@ -263,7 +288,7 @@ public class RPG {
           npcEvent.add(new Event(eo.getInt("eventID"), eo.getInt("triggerID"), text));
         }
         npcs.add(new NPC(true, name, mainStoryNPC.getJSONObject(j).getString("position"), npcEvent, mainStoryNPC.getJSONObject(j).getJSONArray("conditions"), 
-          mainStoryNPC.getJSONObject(j).getJSONArray("endOfEvent"), mainStoryNPC.getJSONObject(j).getJSONObject("battleTrigger"),mainStoryNPC.getJSONObject(j).getString("movement")));
+          mainStoryNPC.getJSONObject(j).getJSONArray("endOfEvent"), mainStoryNPC.getJSONObject(j).getJSONObject("battleTrigger"), mainStoryNPC.getJSONObject(j).getString("movement")));
       }
       JSONArray sideStoryNPC = npcObject.getJSONArray("sideCharacters");
       for (int j = 0; j < sideStoryNPC.size(); j++) {

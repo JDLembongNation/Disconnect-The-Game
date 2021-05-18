@@ -2,6 +2,7 @@
 public class TriggerEvent{
   String[] text;//Text for textbox. 
   boolean isTransition; //Converting between battle and RPG
+  String name; //Person who sent the message.
   //Item 
   //Stat changes 
   //Any upgrades? 
@@ -11,5 +12,9 @@ public class TriggerEvent{
   }
     public TriggerEvent(String[] text){
      this.text = text; 
+  }
+  public TriggerEvent(String[] text,String name){
+    this.name=  name;
+    this.text = text;
   }
 }

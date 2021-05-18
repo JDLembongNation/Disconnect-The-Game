@@ -21,6 +21,7 @@ public class Battle {
       player.run(bs);
       bs.run(player, enemy, 10, 20);
     } else {
+      stroke(0);
       //return to RPG with appropriate sol.
       isBattleActive = false;
       if(player.isPlayerDead()) isPlayerDead = true;

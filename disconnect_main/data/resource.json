@@ -170,7 +170,7 @@
                     "movement":"idle"
                     },
                     {
-                        "name":"Joker",
+                        "name":"Jack Lee Son",
                         "position":"start",
                         "event":[{
                             "eventID":0,
@@ -228,12 +228,8 @@
                         {
                             "eventID":2,
                             "triggerID":0,
-                            "text":["Oooh I saw that battle, that looked kinda painful. I hope you're alright haha."]
-                        },
-                        {
-                            "eventID":3,
-                            "triggerID":0,
-                            "text":["Wow you managed to beat Ji Gong. I took notes on how you dodged those energy balls.",
+                            "text":["Wow you managed to beat Ji Gong.",
+                            "I took notes on how you dodged those energy balls.",
                             "I'll be coming right behind you! HAHA"]
                         }
                     ],"conditions":[{

@@ -145,7 +145,7 @@ public class Map {
         String[] speech = n.getSpeech();
         if (speech == null) return null;
         System.out.println(globalEventID + " THE GLOBAL EVENT ID");
-        TriggerEvent te = new TriggerEvent(speech);
+        TriggerEvent te = new TriggerEvent(speech, n.name);
         if (n.canBattle && n.battleEventID == n.eventTicker) {
           System.out.println("Transition was altered");
           te.isTransition = true;
