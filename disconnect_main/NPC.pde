@@ -1,5 +1,6 @@
 public class NPC {
   String initialPosition;
+  String movement;
   PVector position;
   String name;
   boolean isInStory;
@@ -11,13 +12,14 @@ public class NPC {
   ArrayList<Event> eventList;
   ArrayList<Condition> conditions;
   String[] speech;
-  public NPC(boolean isInStory, String name, String initialPosition, ArrayList<Event> eventList, JSONArray conditions, JSONArray eventChanger, JSONObject battleEvent) {
+  public NPC(boolean isInStory, String name, String initialPosition, ArrayList<Event> eventList, JSONArray conditions, JSONArray eventChanger, JSONObject battleEvent, String movement) {
     this.canBattle= true;
     this.conditions = new ArrayList<Condition>();
     this.isInStory = isInStory;
     this.name = name;
     this.initialPosition = initialPosition;
     this.eventList = eventList;  
+    this.movement = movement;
     this.battleEventID = battleEvent.getInt("eventID");
     this.eventChanger = new int[eventChanger.size()];
     for (int i = 0; i < eventChanger.size(); i++) {

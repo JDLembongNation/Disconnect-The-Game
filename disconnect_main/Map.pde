@@ -40,6 +40,7 @@ public class Map {
           if (playerPosition.x == 0) {
             playerPosition.x = width-unitLength*2;
             mapPosX--;
+            moveNPC();
           }
           currentPosition = 0;
           break;
@@ -50,6 +51,7 @@ public class Map {
           if (playerPosition.y == 0) {
             playerPosition.y = height-unitLength*2;
             mapPosY--;
+            moveNPC();
           }
           currentPosition=1;
           break;
@@ -60,6 +62,7 @@ public class Map {
           if (playerPosition.x == width-unitLength) {
             playerPosition.x = unitLength*2;
             mapPosX++;
+            moveNPC();
           }
           currentPosition=2;
           break;
@@ -70,6 +73,7 @@ public class Map {
           if (playerPosition.y == height-unitLength*2) {
             playerPosition.y = unitLength*2;
             mapPosY++;
+            moveNPC();
           }
           currentPosition=3;
           break;
@@ -192,26 +196,25 @@ public class Map {
       for (int i = 0; i < npcNumber; i++) {
         int placement = (int) random(scene.npcList.size()); //can change to pseudorandom
         if (!scene.npcList.get(placement).isInStory) {
-          //generate random position within block
           NPC npc = new NPC(scene.npcList.get(placement).isInStory, scene.npcList.get(placement).name, scene.npcList.get(placement).speech); //pass by reference. so need to instantiate new instance.
           npc.position = findNewPosition(1, 1);
-          if(npc.position!=null) npcs.add(npc);
+          if (npc.position!=null) npcs.add(npc);
         }
       }
     }
-    void addHouses(){
+    void addHouses() {
       int houseNumber = (int) random(5);
-      for(int i = 0; i < houseNumber;i++){
-        House house = new House(findNewPosition(3,4), rpgBackground[1],3,4);
-        if(house.position!=null)houses.add(house);
+      for (int i = 0; i < houseNumber; i++) {
+        House house = new House(findNewPosition(3, 4), rpgBackground[1], 3, 4);
+        if (house.position!=null)houses.add(house);
       }
     }
     void addDecor() {
       for (int i = 1; i < ((int)width/unitLength)-1; i++) {
         for (int j = 1; j < ((int)height/unitLength)-1; j++) {
           int randomisedNumber = (int) random(30);
-          if(randomisedNumber==12) decorations.add(new Decor(new PVector(j*unitLength, i*unitLength), rpgBackground[3]));
-          if(randomisedNumber==13) decorations.add(new Decor(new PVector(j*unitLength, i*unitLength), rpgBackground[4]));
+          if (randomisedNumber==12) decorations.add(new Decor(new PVector(j*unitLength, i*unitLength), rpgBackground[3]));
+          if (randomisedNumber==13) decorations.add(new Decor(new PVector(j*unitLength, i*unitLength), rpgBackground[4]));
         }
       }
     }
@@ -232,7 +235,7 @@ public class Map {
         if (!intercept) found =true;
         attempts--;
       }
-      if(attempts == 0) return null;
+      if (attempts == 0) return null;
       for (int i = 0; i < y; i++) {
         for (int j = 0; j < x; j++) {
           isWalkable[placeY+i][placeX+j] = false;
@@ -280,17 +283,25 @@ public class Map {
         isWalkable[19][i/30] = true;
       }
     }
-    class Decor{
+    class Decor {
       PVector position;
       PImage image;
-      public Decor(PVector position, PImage image){this.position = position;this.image=image;}
+      public Decor(PVector position, PImage image) {
+        this.position = position;
+        this.image=image;
+      }
     }
-    class House{
+    class House {
       PVector position;
       PImage image;
       int houseWidth;
       int houseHeight;
-      public House(PVector position, PImage image, int houseWidth, int houseHeight){this.position = position; this.image = image; this.houseWidth = houseWidth; this.houseHeight= houseHeight;}
+      public House(PVector position, PImage image, int houseWidth, int houseHeight) {
+        this.position = position; 
+        this.image = image; 
+        this.houseWidth = houseWidth; 
+        this.houseHeight= houseHeight;
+      }
     }
   }
 
@@ -432,24 +443,24 @@ public class Map {
     fill(40, 60, 190);
     rect((playerPosition.x), (playerPosition.y), unitLength, unitLength);
   }
-  
+
   void spawnMap() {
     MapNode current = nodeMap[mapPosY][mapPosX];
     for (int i = 0; i < current.npcs.size(); i++) {
       image(mainCharacter[3], current.npcs.get(i).position.x, current.npcs.get(i).position.y);
     }
-    for(int i = 0; i < current.decorations.size(); i++){
-      image(current.decorations.get(i).image, current.decorations.get(i).position.x,current.decorations.get(i).position.y);
+    for (int i = 0; i < current.decorations.size(); i++) {
+      image(current.decorations.get(i).image, current.decorations.get(i).position.x, current.decorations.get(i).position.y);
     }
-    for(int i = 0; i < current.houses.size(); i++){
-      image(current.houses.get(i).image,current.houses.get(i).position.x,current.houses.get(i).position.y);
+    for (int i = 0; i < current.houses.size(); i++) {
+      image(current.houses.get(i).image, current.houses.get(i).position.x, current.houses.get(i).position.y);
     }
   }
-  
+
   void renderCharacter() {
     image(mainCharacter[currentPosition], playerPosition.x, playerPosition.y);
   }
-  
+
   //Take Current Node and separation.
   void spawnTrees() {
     MapNode current = nodeMap[mapPosY][mapPosX];
@@ -473,5 +484,63 @@ public class Map {
         image(rpgBackground[2], i, 540);
       }
     }
+  }
+  void moveNPC() {
+    for (int i = 0; i < scene.npcList.size(); i++) {
+      if (scene.npcList.get(i).isInStory) {
+        switch(scene.npcList.get(i).movement) {
+        case "idle":
+          //Dont do anything.
+          break;
+        case "moving":
+          {
+            for (int j = 0; j < nodeMap.length; j++) {
+              for (int k = 0; k < nodeMap[j].length; k++) {
+                if (nodeMap[j][k]!=null) {
+                  for (int w = 0; w < nodeMap[j][k].npcs.size(); w++) {
+                    if (scene.npcList.get(i).name.equals(nodeMap[j][k].npcs.get(w).name)) {
+                      NPC c = nodeMap[j][k].npcs.get(w);
+                      shiftNPC(c, j, k);
+                    }
+                  }
+                }
+              }
+            }
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  void shiftNPC(NPC c, int j, int k) {
+    if (j>0 && nodeMap[j-1][k]!=null) {
+      nodeMap[j-1][k].npcs.add(c);
+      addNPC(c,j-1,k);
+      removeNPC(c, j, k);
+    } else if (j < nodeMap.length && nodeMap[j+1][k]!=null) {
+      addNPC(c,j+1,k);
+      removeNPC(c, j, k);
+    } else if (k > 0 && nodeMap[j][k-1]!=null) {
+      addNPC(c,j,k-1);
+      removeNPC(c, j, k);
+    } else if (k < nodeMap.length && nodeMap[j][k+1]!=null) {
+      addNPC(c,j,k+1);
+      removeNPC(c, j, k);
+    }
+  }
+
+  void removeNPC(NPC c, int j, int k) {
+    PVector position = c.position;
+    int posX = (int)position.x/30;
+    int posY = (int)position.y/30;
+    nodeMap[j][k].isWalkable[posY][posX] = true;
+    nodeMap[j][k].isInteractable[posY][posX] = false;
+    nodeMap[j][k].npcs.remove(c);
+  }
+  void addNPC(NPC c, int j, int k) {
+   PVector newPos = nodeMap[j][k].findNewPosition(1,1);
+   c.position = newPos.copy();
+   nodeMap[j][k].npcs.add(c);
   }
 }

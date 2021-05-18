@@ -20,15 +20,15 @@ void setup() {
   transitionBackground = new PImage[1];
   transitionBackground[0] = loadImage("./data/transition/1.png");
   rpgBackground = new PImage[7];
-  mainCharacter = new PImage[4];
+  mainCharacter = new PImage[10];
   for (int i = 0; i < 5; i++) {
     forestBackground[i] = loadImage("./data/opening-bg/"+i+".png");
   }
   for (int i = 0; i < 7; i++) {
     rpgBackground[i] = loadImage("./data/background/1/"+i+".png");
   }
-  for (int i = 0; i < 4; i++) {
-    mainCharacter[i] = loadImage("./data/characters/"+i+".png");
+  for (int i = 0; i < 10; i++) {
+    mainCharacter[i] = loadImage("./data/characters/main-character/"+i+".png");
   }
   openingBG = loadImage("./data/opening-bg/cyberpunk-street.png");
   battleImages = new PImage[1];
@@ -44,7 +44,7 @@ void draw() {
   background(0);
   
    if(!rpg.isSceneFinished){
-   rpg.execScene(scene); //scene
+   rpg.execScene(1); //scene
    
    }else{
    scene++;

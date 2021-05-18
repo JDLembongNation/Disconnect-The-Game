@@ -166,7 +166,8 @@
                     ],
                     "battleTrigger":{
                         "eventID":1
-                    }
+                    },
+                    "movement":"idle"
                     },
                     {
                         "name":"Joker",
@@ -245,7 +246,8 @@
                     ],
                     "battleTrigger":{
                         "eventID":-1
-                    }
+                    },
+                    "movement":"moving"
                     }
                 ],
                 "sideCharacters":[
