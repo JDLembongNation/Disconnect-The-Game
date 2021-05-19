@@ -59,6 +59,7 @@
                }
             ],
             "map":{
+                "objects":[]
 
             },
             "npc":{
@@ -80,43 +81,50 @@
                     "id":0
                 },
                 "objects":[{
+                    "id":0,
+                    "width":1,
+                    "height":1,
+                    "isWalkable":true,
+                    "isInteractable":false
+                },
+                    {
                     "id":1,
-                    "width":90,
-                    "height":120,
+                    "width":3,
+                    "height":3,
                     "isWalkable":false,
                     "isInteractable":false
                 },
                  {
                      "id":2,
-                     "width":60,
-                     "height":90,
+                     "width":2,
+                     "height":2,
                      "isWalkable":false,
                      "isInteractable":false
                 },
                 {
                     "id":3,
-                    "width":30,
-                    "height":30,
+                    "width":1,
+                    "height":1,
                     "isWalkable":true,
                     "isInteractable":false
                 },
                 {
                     "id":4,
-                    "width":30,
-                    "height":30,
+                    "width":1,
+                    "height":1,
                     "isWalkable":true,
                     "isInteractable":false
                 },
                 {
                     "id":5,
-                    "width":30,
-                    "height":30,
+                    "width":1,
+                    "height":1,
                     "isWalkable":false,
                     "isInteractable":true
                 },{
                     "id":6,
-                    "width":30,
-                    "height":30,
+                    "width":1,
+                    "height":1,
                     "isWalkable":false,
                     "isInteractable":false
                 }

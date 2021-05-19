@@ -6,7 +6,6 @@ PImage titleScreenBackground[];
 PImage forestBackground[];
 PImage treesBackground[];
 PImage transitionBackground[];
-PImage rpgBackground[];
 PImage mainCharacter[];
 PImage battleImages[];
 PImage startButton;
@@ -33,7 +32,6 @@ void setup() {
   transitionBackground = new PImage[1];
   transitionBackground[0] = loadImage("./data/transition/1.png");
   titleScreenBackground = new PImage[30];
-  rpgBackground = new PImage[7];
   mainCharacter = new PImage[10];
   treesBackground= new PImage[4];
   for (int i = 0; i < 30; i++) {
@@ -41,9 +39,6 @@ void setup() {
   }
   for (int i = 0; i < 5; i++) {
     forestBackground[i] = loadImage("./data/opening-bg/"+i+".png");
-  }
-  for (int i = 0; i < 7; i++) {
-    rpgBackground[i] = loadImage("./data/background/1/"+i+".png");
   }
   for (int i = 0; i < 10; i++) {
     mainCharacter[i] = loadImage("./data/characters/main-character/"+i+".png");

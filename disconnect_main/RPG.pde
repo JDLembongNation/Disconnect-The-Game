@@ -343,7 +343,7 @@ public class RPG {
         }
         npcs.add(new NPC(false, name, text));
       }
-      scenes.add(new Scene(sc.getInt("sceneID"), sc.getString("title"), sc.getString("subtitleTop"), sc.getString("subtitleBottom"), events, npcs));
+      scenes.add(new Scene(sc.getInt("sceneID"), sc.getString("title"), sc.getString("subtitleTop"), sc.getString("subtitleBottom"), events, npcs, sc.getJSONObject("map").getJSONArray("objects")));
     }
   }
 }

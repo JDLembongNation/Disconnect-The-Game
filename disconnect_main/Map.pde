@@ -235,7 +235,7 @@ public class Map {
     void addHouses() {
       int houseNumber = (int) random(5);
       for (int i = 0; i < houseNumber; i++) {
-        House house = new House(findNewPosition(3, 3), rpgBackground[1], 3, 3);
+        House house = new House(findNewPosition(3, 3), scene.backgroundImages[1], 3, 3);
         if (house.position!=null)houses.add(house);
       }
     }
@@ -243,8 +243,8 @@ public class Map {
       for (int i = 1; i < ((int)width/unitLength)-1; i++) {
         for (int j = 1; j < ((int)height/unitLength)-1; j++) {
           int randomisedNumber = (int) random(30);
-          if (randomisedNumber==12) decorations.add(new Decor(new PVector(j*unitLength, i*unitLength), rpgBackground[3]));
-          if (randomisedNumber==13) decorations.add(new Decor(new PVector(j*unitLength, i*unitLength), rpgBackground[4]));
+          if (randomisedNumber==12) decorations.add(new Decor(new PVector(j*unitLength, i*unitLength), scene.backgroundImages[3]));
+          if (randomisedNumber==13) decorations.add(new Decor(new PVector(j*unitLength, i*unitLength), scene.backgroundImages[4]));
         }
       }
     }
@@ -464,7 +464,7 @@ public class Map {
   void spawnFloor(int floorType) {
     for (int i = 0; i < width; i+=unitLength) {
       for (int j = 0; j < height; j+=unitLength) {
-        image(rpgBackground[floorType], i, j);
+        image(scene.backgroundImages[floorType], i, j);
       }
     }
   }
@@ -514,22 +514,22 @@ public class Map {
     MapNode current = nodeMap[mapPosY][mapPosX];
     for (int i = 0; i < height; i+=unitLength*2) {
       if (!(current.hasEntryPoint[0] && i >= current.entryPoints[0] && i <= current.entryPoints[1])) {
-        image(rpgBackground[2], 0, i);
+        image(scene.backgroundImages[2], 0, i);
       }
     }
     for (int i = 0; i < width; i+=unitLength*2) {
       if (!(current.hasEntryPoint[1] && i >= current.entryPoints[2] && i <= current.entryPoints[3])) {
-        image(rpgBackground[2], i, 0);
+        image(scene.backgroundImages[2], i, 0);
       }
     }
     for (int i = 0; i < height; i+=unitLength*2) {
       if (!(current.hasEntryPoint[2] && i >= current.entryPoints[4] && i <= current.entryPoints[5])) {
-        image(rpgBackground[2], 540, i);
+        image(scene.backgroundImages[2], 540, i);
       }
     }
     for (int i = 0; i < width; i+=unitLength*2) {
       if (!(current.hasEntryPoint[3] && i >= current.entryPoints[6] && i <= current.entryPoints[7])) {
-        image(rpgBackground[2], i, 540);
+        image(scene.backgroundImages[2], i, 540);
       }
     }
   }
