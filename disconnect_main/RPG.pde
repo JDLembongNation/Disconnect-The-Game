@@ -2,6 +2,7 @@ public class RPG {
   GameState gameState;
   final int CITY_ITERATOR = 0;
   int alpha = 255;
+  boolean isMenuActive;
   ArrayList<Scene> scenes;
   boolean reverse = false;
   boolean transitionComplete = false;
@@ -10,12 +11,11 @@ public class RPG {
   String textString = "";
   int textBoxIterator;
   boolean isRPGActive;
-  boolean isCityEventFinished;
-  boolean isForestEventFinished;
   boolean isSceneFinished;
   boolean isTextBoxActive = false;
   boolean isInteractionActive = false;
   boolean isBattleActive = false;
+  int openingEventID;
   TriggerEvent trigger;
   boolean showNextText;
   float timeStamp;
@@ -25,8 +25,9 @@ public class RPG {
   //TEXT SLOT is 6.
 
   public RPG(JSONObject json) { //Will load each scene accordingly
-          gameState = new GameState();
-
+    openingEventID = 0;
+    isMenuActive = false;
+    gameState = new GameState();
     showNextText = false;
     scenes = new ArrayList<Scene>();
     isRPGActive = true;
@@ -85,7 +86,7 @@ public class RPG {
         }
       }
       if (isTextBoxActive) {
-        if(trigger.name!=null) showNameBox(trigger.name);
+        if (trigger.name!=null) showNameBox(trigger.name);
         showTextBox(trigger.text[iterators[7]]);
         if (showNextText) {
           if (iterators[7] == trigger.text.length-1) {
@@ -112,16 +113,19 @@ public class RPG {
   //Will follow an FSM. 
   private void execOpening() {
     if (!isSceneFinished) {
-      if (!isCityEventFinished)
+      switch(openingEventID) {
+      case 0: 
         cityEvent();
-      else {
-        if (!isForestEventFinished) {
-          forestEvent();
-        } else {
-          if (!transitionComplete)
-            showChapter();
-          else isSceneFinished = true;
-        }
+        break;
+      case 1: 
+        forestEvent();
+        break;
+      case 2: 
+        treesEvent();
+        break;
+      case 3: 
+        showChapter();
+        break;
       }
     }
     //Transition.
@@ -134,7 +138,7 @@ public class RPG {
     showTextBox(event.text[iterators[6]]);
     if (showNextText) {
       if (iterators[6] ==maxTextSlot-1) {
-        isCityEventFinished = true;
+        openingEventID++;
         iterators[6] = 0; //RESET TEXT for next event.
       }
       if (iterators[6] < maxTextSlot-1) {
@@ -151,14 +155,26 @@ public class RPG {
     showTextBox(event.text[iterators[6]]);
     if (showNextText) {
       if (iterators[6] == maxTextSlot-1) {
-        isForestEventFinished=true;
+        openingEventID++;
       } else if (iterators[6] < maxTextSlot-1) {
         iterators[6] +=1;
       }
       showNextText = false;
     }
   }
-
+  private void treesEvent() {
+    showTreesBackground();
+    int maxTextSlot = scenes.get(0).events.get(2).text.length;
+    showTextBox(scenes.get(0).events.get(2).text[iterators[15]]);
+    if (showNextText) {
+      if (iterators[15] == maxTextSlot-1) {
+        openingEventID++;
+      } else if (iterators[15] < maxTextSlot-1) {
+        iterators[15] +=1;
+      }
+      showNextText = false;
+    }
+  }
   private void showCityBackground() {
     image(openingBG, -iterators[CITY_ITERATOR], 0);
     if (millis() > timers[12]) {
@@ -198,6 +214,30 @@ public class RPG {
       iterators[5]++;
       if (iterators[5] > 1400) iterators[5] = 0;
       timers[4] = millis()+2;
+    }
+  }
+
+  private void showTreesBackground() {
+    //19,20,21 timers
+    //12,13,14 iterators
+    image(treesBackground[0], 0, 0);
+    image(treesBackground[1], -iterators[12], 0);
+    image(treesBackground[2], -iterators[13], 0);
+    image(treesBackground[3], -iterators[14], 0);
+    if (timers[19] < millis()) {
+      iterators[12]++;
+      if (iterators[12] > 700) iterators[12] = 0;
+      timers[19] = millis()+200;
+    }
+    if (timers[20] < millis()) {
+      iterators[13]++;
+      if (iterators[13] > 700) iterators[13] = 0;
+      timers[20] = millis()+100;
+    }
+    if (timers[21] < millis()) {
+      iterators[14]++;
+      if (iterators[14] > 700) iterators[14] = 0;
+      timers[21] = millis()+50;
     }
   }
 
@@ -247,7 +287,7 @@ public class RPG {
           timers[15] = millis()+10;
         } else {
           alpha = 255;
-          transitionComplete = true;
+          isSceneFinished = true;
         }
       }
     }
@@ -257,6 +297,7 @@ public class RPG {
     rect(0, 0, 600, 600);
     stroke(0);
   }
+
 
   private void parseJSON(JSONObject json) {
     JSONArray s = json.getJSONArray("scene");

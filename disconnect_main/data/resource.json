@@ -10,7 +10,7 @@
                      "eventID":0,
                      "triggerID":0,
                      "text":[
-                         "7:48 PM...",
+                         "7:48 PM... (Press SPACE to continue)",
                          "(Don't forget to send the final email draft to Mr Yamamoto for tonight.)",
                          "(I'll grab a snack at the convenience store before I head home.)",
                          "(Did I forward the correct documents to the team after the meeting?)",
@@ -50,6 +50,12 @@
                         "(It is quite late after all)",
                         "(I hope they don’t miss their train stop)"
                     ]
+               },{
+                "eventID":2,
+                "triggerID":0,
+                "text":[
+                    "Where is this driver taking me?"
+                ]
                }
             ],
             "map":{

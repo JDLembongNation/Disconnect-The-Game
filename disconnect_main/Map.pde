@@ -11,6 +11,8 @@ public class Map {
   int currentPosition = 0;
   int mapPosX;
   int mapPosY;
+  int endMapPosX;
+  int endMapPosY;
   MapNode endNode;
   public Map(Scene scene, GameState gameState) {
     this.gameState = gameState;
@@ -90,7 +92,7 @@ public class Map {
     //Display all the assets etc. 
     //hard code for now. 
     spawnFloor(0);
-    //spawnLines();
+    spawnLines();
     spawnTrees();
     renderCharacter();
     spawnMap();
@@ -169,9 +171,9 @@ public class Map {
         nodeMap[mapPosY][mapPosX].items.remove(i);
         TriggerEvent te = new TriggerEvent(it.text);
         for (Condition c : gameState.objectivesActive) {
-          if(c.conditionID == it.conditionID){
+          if (c.conditionID == it.conditionID) {
             c.removeItem(it);
-            if(c.items.isEmpty()){
+            if (c.items.isEmpty()) {
               gameState.removeObjective(c);
               //move to new event.
               globalEventID++;
@@ -233,7 +235,7 @@ public class Map {
     void addHouses() {
       int houseNumber = (int) random(5);
       for (int i = 0; i < houseNumber; i++) {
-        House house = new House(findNewPosition(3, 4), rpgBackground[1], 3, 4);
+        House house = new House(findNewPosition(3, 3), rpgBackground[1], 3, 3);
         if (house.position!=null)houses.add(house);
       }
     }
@@ -348,6 +350,8 @@ public class Map {
           {
             NPC character = scene.npcList.get(i);
             character.position = nodeMap[0][0].findNewPosition(1, 1);
+            character.mapPosX = 0;
+            character.mapPosY = 0;
             nodeMap[0][0].npcs.add(character);
             break;
           }
@@ -359,6 +363,8 @@ public class Map {
           {
             NPC character = scene.npcList.get(i);
             character.position = endNode.findNewPosition(1, 1);
+            character.mapPosX = endMapPosX;
+            character.mapPosY = endMapPosY;
             endNode.npcs.add(character);
             break;
           }
@@ -405,7 +411,11 @@ public class Map {
 
   MapNode generateNodes(MapNode node, int layer, int maxLayer, int posX, int posY) {
     if (layer == maxLayer) {
-      if (endNode==null) endNode = node;
+      if (endNode==null){ 
+      endNode = node;
+      endMapPosX = posX;
+      endMapPosY = posY;
+    }
       return node;
     } else {
       int separator = (int) (random(10));
@@ -523,30 +533,12 @@ public class Map {
       }
     }
   }
-  void moveNPC() {
-    for (int i = 0; i < scene.npcList.size(); i++) {
-      if (scene.npcList.get(i).isInStory) {
-        switch(scene.npcList.get(i).movement) {
-        case "idle":
-          //Dont do anything.
-          break;
-        case "moving":
-          {
-            for (int j = 0; j < nodeMap.length; j++) {
-              for (int k = 0; k < nodeMap[j].length; k++) {
-                if (nodeMap[j][k]!=null) {
-                  for (int w = 0; w < nodeMap[j][k].npcs.size(); w++) {
-                    if (scene.npcList.get(i).name.equals(nodeMap[j][k].npcs.get(w).name)) {
-                      NPC c = nodeMap[j][k].npcs.get(w);
-                      shiftNPC(c, j, k);
-                    }
-                  }
-                }
-              }
-            }
-            break;
-          }
-        }
+
+  //FIX this function.
+  void moveNPC() { 
+    for(NPC n: scene.npcList){
+      if(n.isInStory && n.movement.equals("moving")){
+         shiftNPC(n, n.mapPosY, n.mapPosX);
       }
     }
   }
@@ -554,22 +546,23 @@ public class Map {
   void shiftNPC(NPC c, int j, int k) {
     if (j>0 && nodeMap[j-1][k]!=null) {
       nodeMap[j-1][k].npcs.add(c);
+      removeNPC(c, j, k);
       addNPC(c, j-1, k);
-      removeNPC(c, j, k);
     } else if (j < nodeMap.length && nodeMap[j+1][k]!=null) {
+      removeNPC(c, j, k);
       addNPC(c, j+1, k);
-      removeNPC(c, j, k);
     } else if (k > 0 && nodeMap[j][k-1]!=null) {
+      removeNPC(c, j, k);
       addNPC(c, j, k-1);
-      removeNPC(c, j, k);
     } else if (k < nodeMap.length && nodeMap[j][k+1]!=null) {
-      addNPC(c, j, k+1);
       removeNPC(c, j, k);
+      addNPC(c, j, k+1);
     }
   }
 
   void removeNPC(NPC c, int j, int k) {
-    PVector position = c.position;
+    PVector position = c.position.copy();
+    System.out.println("Removing PVector: "+ (position.x/30) + " ; " + (position.y/30));
     int posX = (int)position.x/30;
     int posY = (int)position.y/30;
     nodeMap[j][k].isWalkable[posY][posX] = true;
@@ -578,7 +571,10 @@ public class Map {
   }
   void addNPC(NPC c, int j, int k) {
     PVector newPos = nodeMap[j][k].findNewPosition(1, 1);
+    System.out.println("Adding PVector: "+ (newPos.x/30) + " ; " +(newPos.y/30));
     c.position = newPos.copy();
+    c.mapPosX = k;
+    c.mapPosY = j;
     nodeMap[j][k].npcs.add(c);
   }
   void generateObjectives() {

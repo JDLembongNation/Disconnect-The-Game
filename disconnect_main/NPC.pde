@@ -1,6 +1,8 @@
 public class NPC {
   String initialPosition;
   String movement;
+  int mapPosX;
+  int mapPosY;
   PVector position;
   String name;
   boolean isInStory;
