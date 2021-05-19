@@ -181,9 +181,9 @@ void mousePressed() {
   } else {
     if (titleScreenActive) {
       if (controlScreenActive) {
-        if (mouseInRegion(220, 450, 170, 60))) controlScreenActive=false;
+        if (mouseInRegion(220, 450, 170, 60)) controlScreenActive=false;
       } else {
-        if (mouseInRegion(100, 400, 170, 60))) {
+        if (mouseInRegion(100, 400, 170, 60)) {
           titleScreenActive = false;
         }
         if (mouseInRegion(350, 400, 170, 60)) {
