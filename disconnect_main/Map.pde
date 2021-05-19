@@ -1,4 +1,4 @@
-import java.util.*; //<>// //<>//
+import java.util.*; //<>// //<>// //<>//
 public class Map {
   GameState gameState;
   int globalEventID;

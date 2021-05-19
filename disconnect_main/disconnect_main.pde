@@ -51,7 +51,7 @@ void setup() {
   battleImages[0] = loadImage("./data/battle/bg-1.png");
   startButton = loadImage("./data/opening-bg/main-menu/start.png");
   controlButton = loadImage("./data/opening-bg/main-menu/controls.png");
-  timers = new float[23];
+  timers = new float[24];
   iterators = new int[16];
   scene = 0;
   battle = new Battle();
@@ -62,20 +62,20 @@ void draw() {
   background(0);
   /*
   if (!titleScreenActive) {
-    if (!gamePaused) {
-      if (!rpg.isSceneFinished) {
-        rpg.execScene(1); //scene
-      } else {
-        scene++;
-        rpg.isSceneFinished=false;
-      }
-    }else{
-      showPausedMenu();
-    }
-  } else {
-    titleScreen();
-  }
-  */
+   if (!gamePaused) {
+   if (!rpg.isSceneFinished) {
+   rpg.execScene(1); //scene
+   } else {
+   scene++;
+   rpg.isSceneFinished=false;
+   }
+   }else{
+   showPausedMenu();
+   }
+   } else {
+   titleScreen();
+   }
+   */
   battle.run();
 }
 
@@ -84,10 +84,10 @@ private void showPausedMenu() {
   rect(0, 0, 600, 600);
   fill(255);
   textSize(80);
-  text("Paused", 100,100);
-  rect(200,200,170,60);
-  rect(200,300,170,60);
-  rect(200,400,170,60);
+  text("Paused", 100, 100);
+  rect(200, 200, 170, 60);
+  rect(200, 300, 170, 60);
+  rect(200, 400, 170, 60);
 }
 
 void keyPressed() {
@@ -174,18 +174,28 @@ void titleScreen() {
   }
 }
 void mousePressed() {
-  if (titleScreenActive) {
-    if (controlScreenActive) {
-      if (mouseX > 220 && mouseX < 390 && mouseY > 450 && mouseY < 510) controlScreenActive=false;
-    } else {
-      if (mouseX > 100 && mouseX < 270 && mouseY > 400 && mouseY < 460) {
-        titleScreenActive = false;
-      }
-      if (mouseX > 350 && mouseX < 520 && mouseY > 400 && mouseY < 460) {
-        controlScreenActive=true;
+  if (gamePaused) {
+    if (mouseInRegion(200, 300, 170, 60)) {
+      
+    }
+  } else {
+    if (titleScreenActive) {
+      if (controlScreenActive) {
+        if (mouseInRegion(220, 450, 170, 60))) controlScreenActive=false;
+      } else {
+        if (mouseInRegion(100, 400, 170, 60))) {
+          titleScreenActive = false;
+        }
+        if (mouseInRegion(350, 400, 170, 60)) {
+          controlScreenActive=true;
+        }
       }
     }
   }
+}
+
+boolean mouseInRegion(int x, int y, int regionWidth, int regionHeight) {
+  return mouseX > x && mouseX < (x+regionWidth) && mouseY > y && mouseY < (y+regionHeight);
 }
 
 String generateRPGControls() {

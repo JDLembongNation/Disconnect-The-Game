@@ -26,12 +26,12 @@ public class BulletSystem{
       if(!b.isPlayerBullet){
         if(b.addCustomColour) b.displayRegularColouredBullet();
          else b.displayRegularBullet();
-      if(inRegion(b.position, player.position, playerConstraints)){
+      if(inRegion(b, player.position, playerConstraints)){
         player.deductLife();
         }
       }else{
          b.displayRegularBullet(130);
-        if(inRegion(b.position, enemy.position, enemyConstraints)){
+        if(inRegion(b, enemy.position, enemyConstraints)){
           if(enemy.inSpell){
             enemy.health-=5;//0.05
           }
@@ -48,8 +48,8 @@ public class BulletSystem{
     bullets.clear();
   }
   
-  boolean inRegion(PVector subject, PVector character, int regionSize){
-    PVector result = subject.copy().sub(character);
-    return (result.mag() < regionSize);
+  boolean inRegion(Bullet subject, PVector character, int regionSize){
+    PVector result = subject.position.copy().sub(character);
+    return (result.mag() < (regionSize+subject.radius));
   }
 }

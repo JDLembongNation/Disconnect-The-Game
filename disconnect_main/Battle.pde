@@ -19,7 +19,7 @@ public class Battle {
       update();  
       enemy.run(bs);
       player.run(bs);
-      bs.run(player, enemy, 9, 14);
+      bs.run(player, enemy, 5, 10);
     } else {
       stroke(0);
       //return to RPG with appropriate sol.
