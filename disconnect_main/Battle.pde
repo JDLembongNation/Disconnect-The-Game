@@ -19,7 +19,7 @@ public class Battle {
       update();  
       enemy.run(bs);
       player.run(bs);
-      bs.run(player, enemy, 10, 20);
+      bs.run(player, enemy, 9, 14);
     } else {
       stroke(0);
       //return to RPG with appropriate sol.
@@ -33,8 +33,8 @@ public class Battle {
     image(battleImages[0], 0, 0);
     //draw enemy and players here. 
     fill(255);
-    rect(enemy.position.x, enemy.position.y, 20, 20);
-    rect(player.position.x, player.position.y, 10, 10);
+    rect(enemy.position.x-10, enemy.position.y-10, 20, 20);
+    rect(player.position.x-5, player.position.y-5, 10, 10);
     hud();   
   }
 

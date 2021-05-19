@@ -60,6 +60,7 @@ void setup() {
 
 void draw() {  
   background(0);
+  /*
   if (!titleScreenActive) {
     if (!gamePaused) {
       if (!rpg.isSceneFinished) {
@@ -74,6 +75,8 @@ void draw() {
   } else {
     titleScreen();
   }
+  */
+  battle.run();
 }
 
 private void showPausedMenu() {

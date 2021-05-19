@@ -61,7 +61,6 @@ public class NPC {
     return null;
   }
 
-
   private void iterateTrigger(int eventID, int triggerID) {
     boolean canIterate = true;
     for (int i = 0; i < conditions.size(); i++) {

@@ -48,7 +48,8 @@ public class BulletSystem{
     bullets.clear();
   }
   
-  boolean inRegion(PVector subject, PVector region, int regionSize){
-    return ((subject.x > region.x && subject.x < region.x +regionSize && subject.y > region.y && subject.y < region.y + regionSize));
+  boolean inRegion(PVector subject, PVector character, int regionSize){
+    PVector result = subject.copy().sub(character);
+    return (result.mag() < regionSize);
   }
 }

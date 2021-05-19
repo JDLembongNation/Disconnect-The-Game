@@ -68,17 +68,17 @@ public class Bullet{
   public void displayRegularBullet(){
     stroke(255);
     fill(255);
-    ellipse(position.x, position.y, 8, 8);
+    ellipse(position.x-4, position.y-4, 8, 8);
   }
    public void displayRegularBullet(int alpha){
     stroke(255);
     fill(255, alpha);
-    ellipse(position.x, position.y, 8, 8);
+    ellipse(position.x-4, position.y-4, 8, 8);
   }
      public void displayRegularColouredBullet(){
     noStroke();
     fill(r,g,b);
-    ellipse(position.x, position.y, 8, 8);
+    ellipse(position.x-4, position.y-4, 8, 8);
     stroke(255);
   }
   public void setToPlayerBullet(){isPlayerBullet = true;}
