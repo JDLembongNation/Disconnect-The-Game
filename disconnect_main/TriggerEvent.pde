@@ -17,4 +17,8 @@ public class TriggerEvent{
     this.name=  name;
     this.text = text;
   }
+  public TriggerEvent(String t){
+    this.text = new String[1];
+    this.text[0] = t;    
+  }
 }

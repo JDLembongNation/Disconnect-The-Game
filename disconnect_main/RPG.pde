@@ -25,6 +25,8 @@ public class RPG {
   //TEXT SLOT is 6.
 
   public RPG(JSONObject json) { //Will load each scene accordingly
+          gameState = new GameState();
+
     showNextText = false;
     scenes = new ArrayList<Scene>();
     isRPGActive = true;
@@ -37,7 +39,6 @@ public class RPG {
     switch(scene) {
     case 0: 
       {
-        gameState = new GameState();
         execOpening(); 
         return false;
       }

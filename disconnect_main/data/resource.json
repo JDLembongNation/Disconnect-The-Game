@@ -233,21 +233,29 @@
                             "I'll be coming right behind you! HAHA"]
                         }
                     ],"conditions":[{
+                        "conditionID":0,
                         "eventID":0,
                         "triggerID":1,
                         "condition":"itemFind",
-                        "specifics":{
-                            "itemList":[
-                                {
-                                    "id":0
-                                },
-                                {
-                                  "id":1  
-                                },{
-                                    "id":2
-                                }
-                            ]
-                        }
+                        "itemList":[
+                            {
+                                "id":0,
+                                "imageID":1,
+                                "text":"A \"Lovely Scarf\""
+                            },
+                            {
+                                "id":1, 
+                                "imageID":1,
+
+                                "text":"A \"Top Hat\"?"
+                            },{
+                                "id":2,
+                                "imageID":1,
+
+                                "text":"A pair of \"wishiwashi sunglasses\""
+                            }
+                        ]
+                        
                     }],
                     "endOfEvent":[
                         0

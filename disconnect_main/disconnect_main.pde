@@ -23,7 +23,7 @@ void setup() {
   title="DISCONNECT";
   subtitle="The Game";
   controlScreenActive = false;
-  titleScreenActive = true;
+  titleScreenActive = false;
   keys = new boolean[6];
   font = createFont("monogram.ttf", 30);
   rpg = new RPG(loadJSONObject("./data/resource.json"));
@@ -61,7 +61,7 @@ void draw() {
   background(0);
   if (!titleScreenActive) {
     if (!rpg.isSceneFinished) {
-      rpg.execScene(scene); //scene
+      rpg.execScene(1); //scene
     } else {
       scene++;
       rpg.isSceneFinished=false;

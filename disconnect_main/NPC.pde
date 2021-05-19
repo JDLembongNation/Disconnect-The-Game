@@ -27,12 +27,12 @@ public class NPC {
     }
     //parse conditions.
     for (int i = 0; i < conditions.size(); i++) {
-      this.conditions.add(new Condition(conditions.getJSONObject(i).getInt("eventID"), conditions.getJSONObject(i).getInt("triggerID"), conditions.getJSONObject(i).getString("condition")));
+      this.conditions.add(new Condition(conditions.getJSONObject(i).getInt("conditionID"),conditions.getJSONObject(i).getInt("eventID"), conditions.getJSONObject(i).getInt("triggerID"), 
+      conditions.getJSONObject(i).getString("condition"), conditions.getJSONObject(i).getJSONArray("itemList")));
     }
   }
   public NPC(boolean isInStory, String name, String[] speech) {
     this.canBattle= false;
-
     this.isInStory = isInStory;
     this.speech = speech;
     this.name = name;
@@ -64,8 +64,8 @@ public class NPC {
     boolean canIterate = true;
     for (int i = 0; i < conditions.size(); i++) {
       if (eventID == conditions.get(i).eventID && triggerID == conditions.get(i).triggerID) {
-        //Certain condition must be met to iterate
-        //canIterate = false;
+        //Leave it up to map to directly change NPC triggerID. 
+        canIterate=false;
       }
     }
     if (canIterate) {

@@ -91,7 +91,6 @@ public class Map {
     //hard code for now. 
     spawnFloor(0);
     //spawnLines();
-    generateObjectives();
     spawnTrees();
     renderCharacter();
     spawnMap();
@@ -147,9 +146,15 @@ public class Map {
         }
         String[] speech = n.getSpeech();
         if (speech == null) return null;
-        Condition c = n.getCondition();
-        if(c!=null){
-           if(!gameState.hasObjective(c))gameState.addObjective(c);
+        if (n.isInStory) {
+          Condition c = n.getCondition();
+          if (c!=null) {
+            if (!gameState.hasObjective(c)) {
+              System.out.println("CHECK TEST");
+              gameState.addObjective(c);
+              generateObjectives();
+            }
+          }
         }
         TriggerEvent te = new TriggerEvent(speech, n.name);
         if (n.canBattle && n.battleEventID == n.eventTicker) {
@@ -158,16 +163,35 @@ public class Map {
         return te;
       }
     }
+    for (int i = 0; i < (nodeMap[mapPosY][mapPosX].items.size()); i++) {
+      Item it = nodeMap[mapPosY][mapPosX].items.get(i);
+      if (it.position.x == ((relX)*unitLength) && it.position.y == (relY*unitLength)) {
+        nodeMap[mapPosY][mapPosX].items.remove(i);
+        TriggerEvent te = new TriggerEvent(it.text);
+        for (Condition c : gameState.objectivesActive) {
+          if(c.conditionID == it.conditionID){
+            c.removeItem(it);
+            if(c.items.isEmpty()){
+              gameState.removeObjective(c);
+              //move to new event.
+              globalEventID++;
+            }
+          }
+          return te;
+        }
+      }
+    }
     return null;
   }
 
-  public class MapNode {
+  class MapNode {
     //Each map node will have a fixed size of 600x600. 
     boolean isWalkable[][] = new boolean[height/unitLength][width/unitLength];
     boolean isInteractable[][] = new boolean[height/unitLength][width/unitLength];
     ArrayList<NPC> npcs = new ArrayList<NPC>();
     ArrayList<Decor> decorations = new ArrayList<Decor>();
     ArrayList<House> houses = new ArrayList<House>();
+    ArrayList<Item> items = new ArrayList<Item>();
     MapNode top;
     MapNode left;
     MapNode right;
@@ -286,6 +310,13 @@ public class Map {
         isWalkable[18][i/30] = true;
         isWalkable[19][i/30] = true;
       }
+    }
+
+    boolean addItem(Item it) {
+      it.position = findNewPosition(1, 1);
+      if (it.position==null)return false;
+      items.add(it);
+      return true;
     }
     class Decor {
       PVector position;
@@ -459,6 +490,9 @@ public class Map {
     for (int i = 0; i < current.houses.size(); i++) {
       image(current.houses.get(i).image, current.houses.get(i).position.x, current.houses.get(i).position.y);
     }
+    for (int i =0; i < current.items.size(); i++) {
+      if (current.items.get(i).position != null) image(current.items.get(i).image, current.items.get(i).position.x, current.items.get(i).position.y);
+    }
   }
 
   void renderCharacter() {
@@ -520,16 +554,16 @@ public class Map {
   void shiftNPC(NPC c, int j, int k) {
     if (j>0 && nodeMap[j-1][k]!=null) {
       nodeMap[j-1][k].npcs.add(c);
-      addNPC(c,j-1,k);
+      addNPC(c, j-1, k);
       removeNPC(c, j, k);
     } else if (j < nodeMap.length && nodeMap[j+1][k]!=null) {
-      addNPC(c,j+1,k);
+      addNPC(c, j+1, k);
       removeNPC(c, j, k);
     } else if (k > 0 && nodeMap[j][k-1]!=null) {
-      addNPC(c,j,k-1);
+      addNPC(c, j, k-1);
       removeNPC(c, j, k);
     } else if (k < nodeMap.length && nodeMap[j][k+1]!=null) {
-      addNPC(c,j,k+1);
+      addNPC(c, j, k+1);
       removeNPC(c, j, k);
     }
   }
@@ -543,11 +577,27 @@ public class Map {
     nodeMap[j][k].npcs.remove(c);
   }
   void addNPC(NPC c, int j, int k) {
-   PVector newPos = nodeMap[j][k].findNewPosition(1,1);
-   c.position = newPos.copy();
-   nodeMap[j][k].npcs.add(c);
+    PVector newPos = nodeMap[j][k].findNewPosition(1, 1);
+    c.position = newPos.copy();
+    nodeMap[j][k].npcs.add(c);
   }
-  void generateObjectives(){
-    
+  void generateObjectives() {
+    for (Condition c : gameState.objectivesActive) {
+      switch(c.condition) {
+      case "itemFind":
+        itemFind(c);
+        break;
+      }
+    }
+  }
+  void itemFind(Condition c) {
+    for (int i = 0; i< c.items.size(); i++) {
+      //change in the future
+      if (!nodeMap[0][0].addItem(c.items.get(i))) {
+        System.out.println("Item addition Unsuccessful");
+      } else {
+        System.out.println("Item addition successful");
+      }
+    }
   }
 }
