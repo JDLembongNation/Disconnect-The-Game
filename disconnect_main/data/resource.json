@@ -235,7 +235,19 @@
                     ],"conditions":[{
                         "eventID":0,
                         "triggerID":1,
-                        "condition":"itemFind"
+                        "condition":"itemFind",
+                        "specifics":{
+                            "itemList":[
+                                {
+                                    "id":0
+                                },
+                                {
+                                  "id":1  
+                                },{
+                                    "id":2
+                                }
+                            ]
+                        }
                     }],
                     "endOfEvent":[
                         0

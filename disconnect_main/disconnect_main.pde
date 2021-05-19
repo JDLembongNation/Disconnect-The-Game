@@ -14,6 +14,7 @@ float timers[];
 int iterators[];
 boolean keys[];
 boolean titleScreenActive;
+boolean controlScreenActive;
 Battle battle;
 String title;
 String subtitle;
@@ -21,6 +22,7 @@ void setup() {
   size(600, 600);
   title="DISCONNECT";
   subtitle="The Game";
+  controlScreenActive = false;
   titleScreenActive = true;
   keys = new boolean[6];
   font = createFont("monogram.ttf", 30);
@@ -31,7 +33,9 @@ void setup() {
   titleScreenBackground = new PImage[30];
   rpgBackground = new PImage[7];
   mainCharacter = new PImage[10];
-  for(int i = 0; i < 30; i++){titleScreenBackground[i] = loadImage("./data/opening-bg/main-menu/"+i+".png");}
+  for (int i = 0; i < 30; i++) {
+    titleScreenBackground[i] = loadImage("./data/opening-bg/main-menu/"+i+".png");
+  }
   for (int i = 0; i < 5; i++) {
     forestBackground[i] = loadImage("./data/opening-bg/"+i+".png");
   }
@@ -100,40 +104,49 @@ void titleScreen() {
     if (iterators[8] > 29) iterators[8] = 0;
     timers[17] = millis()+50;
   }
-  fill(0,120);
-  rect(0,0,600,600);
+  fill(0, 120);
+  rect(0, 0, 600, 600);
   //words iterators 9 and 10
   String t = "";
   String st = "";
-  if(millis() > timers[18]){
+  if (millis() > timers[18]) {
     timers[18] = millis() +100;
-    if(iterators[9] < title.length()){
+    if (iterators[9] < title.length()) {
       iterators[9]++;
     }
-    if(iterators[10] < subtitle.length()){
+    if (iterators[10] < subtitle.length()) {
       iterators[10]++;
     }
   }
-  for(int i = 0;i< iterators[9];i++){
+  for (int i = 0; i< iterators[9]; i++) {
     t += title.toCharArray()[i];
   }
-    for(int i = 0;i< iterators[10];i++){
+  for (int i = 0; i< iterators[10]; i++) {
     st += subtitle.toCharArray()[i];
   }
-  fill(255);
-  textFont(font);
-  textSize(100);
-  text(t,110,100);
-  textSize(50);
-  text(st,225,150);
-  //buttons
-  image(startButton, 100,400);
-  image(controlButton, 350,400);
+  if (!controlScreenActive) {
+    fill(255);
+    textFont(font);
+    textSize(100);
+    text(t, 110, 100);
+    textSize(50);
+    text(st, 225, 150);
+    //buttons
+    image(startButton, 100, 400);
+    image(controlButton, 350, 400);
+  } else {
+    fill(255);
+    textFont(font);
+    text("You dont need instructions, Fuck you!",50,500);
+  }
 }
-void mousePressed(){
-  if(titleScreenActive){
-    if(mouseX > 100 && mouseX < 270 && mouseY > 400 && mouseY < 460){
+void mousePressed() {
+  if (titleScreenActive) {
+    if (mouseX > 100 && mouseX < 270 && mouseY > 400 && mouseY < 460) {
       titleScreenActive = false;
+    }
+    if (mouseX > 350 && mouseX < 520 && mouseY > 400 && mouseY < 460) {
+      controlScreenActive=true;
     }
   }
 }

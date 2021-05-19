@@ -52,6 +52,13 @@ public class NPC {
       return speech;
     }
   }
+  public Condition getCondition(){
+    for(Condition c : conditions){
+      if(c.eventID == eventTicker && c.triggerID == triggerTicker) return c;
+    }
+    return null;
+  }
+
 
   private void iterateTrigger(int eventID, int triggerID) {
     boolean canIterate = true;
@@ -80,17 +87,6 @@ public class NPC {
           triggerTicker=0;
         } //otherwise dont change anything.
       }
-    }
-  }
-
-  class Condition {
-    int eventID;
-    int triggerID;
-    String condition;
-    public Condition(int eventID, int triggerID, String condition) {
-      this.eventID = eventID;
-      this.triggerID = triggerID;
-      this.condition = condition;
     }
   }
 }

@@ -1,7 +1,9 @@
 import java.util.*; //<>// //<>//
 public class Map {
+  GameState gameState;
   int globalEventID;
   Scene scene;
+  boolean conditionActive;
   final int unitLength = 30;
   PVector playerPosition;
   boolean isCompleted;
@@ -10,7 +12,8 @@ public class Map {
   int mapPosX;
   int mapPosY;
   MapNode endNode;
-  public Map(Scene scene) {
+  public Map(Scene scene, GameState gameState) {
+    this.gameState = gameState;
     this.endNode = null;
     this.scene = scene;
     globalEventID = 0;
@@ -88,7 +91,7 @@ public class Map {
     //hard code for now. 
     spawnFloor(0);
     //spawnLines();
-
+    generateObjectives();
     spawnTrees();
     renderCharacter();
     spawnMap();
@@ -144,13 +147,14 @@ public class Map {
         }
         String[] speech = n.getSpeech();
         if (speech == null) return null;
-        System.out.println(globalEventID + " THE GLOBAL EVENT ID");
+        Condition c = n.getCondition();
+        if(c!=null){
+           if(!gameState.hasObjective(c))gameState.addObjective(c);
+        }
         TriggerEvent te = new TriggerEvent(speech, n.name);
         if (n.canBattle && n.battleEventID == n.eventTicker) {
-          System.out.println("Transition was altered");
           te.isTransition = true;
         }
-        System.out.println(n.eventTicker + " yes " + globalEventID);
         return te;
       }
     }
@@ -542,5 +546,8 @@ public class Map {
    PVector newPos = nodeMap[j][k].findNewPosition(1,1);
    c.position = newPos.copy();
    nodeMap[j][k].npcs.add(c);
+  }
+  void generateObjectives(){
+    
   }
 }

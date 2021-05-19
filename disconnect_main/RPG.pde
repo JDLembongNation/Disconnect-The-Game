@@ -1,4 +1,5 @@
 public class RPG {
+  GameState gameState;
   final int CITY_ITERATOR = 0;
   int alpha = 255;
   ArrayList<Scene> scenes;
@@ -36,6 +37,7 @@ public class RPG {
     switch(scene) {
     case 0: 
       {
+        gameState = new GameState();
         execOpening(); 
         return false;
       }
@@ -52,12 +54,11 @@ public class RPG {
         if (battle.isPlayerDead) {
         } else {
           map.globalEventID++;
-          System.out.println("THE NEW GLOBAL ID:" + map.globalEventID);
         }
       } else battle.run();
     } else {
       if (!isMapGenerated) {
-        map = new Map(scenes.get(scene));
+        map = new Map(scenes.get(scene), gameState);
         isMapGenerated = true;
       }
       if (map.isCompleted) {
