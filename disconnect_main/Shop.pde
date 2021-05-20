@@ -4,6 +4,4 @@ public class Shop{
   public Shop(){
     
   }
-  public void getShopMessage(){
-  }
 }

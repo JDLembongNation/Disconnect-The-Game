@@ -65,40 +65,42 @@ public class RPG {
       }
       if (map.isCompleted) {
         isMapGenerated = false;
+        isSceneFinished=true;
         //Move on to the next scene here.
-      }
-      map.render();
-      //Execute Player Movements. 
-      if (keys[0])map.playerMovement(0);
-      if (keys[1])map.playerMovement(1);
-      if (keys[2])map.playerMovement(2);
-      if (keys[3])map.playerMovement(3);
-      if (keys[4]) {
-        if (timers[14] < millis()) {
-          timers[14] = millis()+100;
-          if (!isInteractionActive) {
-            trigger = map.playerInteract();
-            if (trigger!=null) {
-              isInteractionActive=true;
-              isTextBoxActive=true;
+      } else {
+        map.render();
+        //Execute Player Movements. 
+        if (keys[0])map.playerMovement(0);
+        if (keys[1])map.playerMovement(1);
+        if (keys[2])map.playerMovement(2);
+        if (keys[3])map.playerMovement(3);
+        if (keys[4]) {
+          if (timers[14] < millis()) {
+            timers[14] = millis()+100;
+            if (!isInteractionActive) {
+              trigger = map.playerInteract();
+              if (trigger!=null) {
+                isInteractionActive=true;
+                isTextBoxActive=true;
+              }
             }
           }
         }
-      }
-      if (isTextBoxActive) {
-        if (trigger.name!=null) showNameBox(trigger.name);
-        showTextBox(trigger.text[iterators[7]]);
-        if (showNextText) {
-          if (iterators[7] == trigger.text.length-1) {
-            isInteractionActive = false;
-            isTextBoxActive =false;
-            iterators[7] = 0;
-            if (trigger.isTransition) {
-              System.out.println("Battle Triggerd");
-              triggerBattle();
-            }
-          } else if (iterators[7] <trigger.text.length-1)iterators[7]++;
-          showNextText = false;
+        if (isTextBoxActive) {
+          if (trigger.name!=null) showNameBox(trigger.name);
+          showTextBox(trigger.text[iterators[7]]);
+          if (showNextText) {
+            if (iterators[7] == trigger.text.length-1) {
+              isInteractionActive = false;
+              isTextBoxActive =false;
+              iterators[7] = 0;
+              if (trigger.isTransition) {
+                System.out.println("Battle Triggerd");
+                triggerBattle();
+              }
+            } else if (iterators[7] <trigger.text.length-1)iterators[7]++;
+            showNextText = false;
+          }
         }
       }
     }
@@ -343,7 +345,7 @@ public class RPG {
         }
         npcs.add(new NPC(false, name, text));
       }
-      scenes.add(new Scene(sc.getInt("sceneID"), sc.getString("title"), sc.getString("subtitleTop"), sc.getString("subtitleBottom"), events, npcs, sc.getJSONObject("map").getJSONArray("objects")));
+      scenes.add(new Scene(sc.getInt("sceneID"), sc.getString("title"), sc.getString("subtitleTop"), sc.getString("subtitleBottom"), events, npcs, sc.getJSONObject("map").getJSONArray("objects"), sc.getInt("endOfScene")));
     }
   }
 }

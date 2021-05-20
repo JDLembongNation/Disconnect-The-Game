@@ -1,20 +1,23 @@
-import java.util.*; //<>// //<>// //<>//
+import java.util.*;  //<>//
 public class Map {
   GameState gameState;
   int globalEventID;
   Scene scene;
-  boolean conditionActive;
   final int unitLength = 30;
   PVector playerPosition;
   boolean isCompleted;
   MapNode[][] nodeMap;
   int currentPosition = 0;
+  boolean isPathWayConstructed;
   int mapPosX;
   int mapPosY;
   int endMapPosX;
   int endMapPosY;
   MapNode endNode;
   public Map(Scene scene, GameState gameState) {
+    isPathWayConstructed = false;
+    endMapPosX = 0;
+    endMapPosY = 0;
     this.gameState = gameState;
     this.endNode = null;
     this.scene = scene;
@@ -74,11 +77,15 @@ public class Map {
         }
       case 3: 
         {
-          if (playerPosition.y < height-unitLength*2 && nodeMap[mapPosY][mapPosX].isWalkable[((int)playerPosition.y/30)+1][((int)playerPosition.x/30)])playerPosition.y +=unitLength;
-          if (playerPosition.y == height-unitLength*2) {
-            playerPosition.y = unitLength*2;
-            mapPosY++;
-            moveNPC();
+          if (!(mapPosX == endMapPosX && mapPosY == endMapPosY)) {
+            if (playerPosition.y < height-unitLength*2 && nodeMap[mapPosY][mapPosX].isWalkable[((int)playerPosition.y/30)+1][((int)playerPosition.x/30)])playerPosition.y +=unitLength;
+            if (playerPosition.y == height-unitLength*2) {
+              playerPosition.y = unitLength*2;
+              mapPosY++;
+              moveNPC();
+            }
+          } else {
+            if (playerPosition.y < height-unitLength*1 && nodeMap[mapPosY][mapPosX].isWalkable[((int)playerPosition.y/30)+1][((int)playerPosition.x/30)])playerPosition.y +=unitLength;
           }
           currentPosition=3;
           break;
@@ -91,11 +98,16 @@ public class Map {
   void render() {
     //Display all the assets etc. 
     //hard code for now. 
-    spawnFloor(0);
-    spawnLines();
+    spawnFloor();
+    //spawnLines();
     spawnTrees();
     renderCharacter();
     spawnMap();
+    if (scene.endOfScene==globalEventID && !isPathWayConstructed) {
+      endNode.addSouthEntryPoint(90, 240);
+      isPathWayConstructed = true;
+    }
+    nextEventPath();
   }
 
   TriggerEvent playerInteract() {
@@ -152,7 +164,6 @@ public class Map {
           Condition c = n.getCondition();
           if (c!=null) {
             if (!gameState.hasObjective(c)) {
-              System.out.println("CHECK TEST");
               gameState.addObjective(c);
               generateObjectives();
             }
@@ -411,11 +422,11 @@ public class Map {
 
   MapNode generateNodes(MapNode node, int layer, int maxLayer, int posX, int posY) {
     if (layer == maxLayer) {
-      if (endNode==null){ 
-      endNode = node;
-      endMapPosX = posX;
-      endMapPosY = posY;
-    }
+      if (endNode==null) { 
+        endNode = node;
+        endMapPosX = posX;
+        endMapPosY = posY;
+      }
       return node;
     } else {
       int separator = (int) (random(10));
@@ -461,10 +472,10 @@ public class Map {
     return node;
   }
 
-  void spawnFloor(int floorType) {
+  void spawnFloor() {
     for (int i = 0; i < width; i+=unitLength) {
       for (int j = 0; j < height; j+=unitLength) {
-        image(scene.backgroundImages[floorType], i, j);
+        image(scene.backgroundImages[0], i, j);
       }
     }
   }
@@ -513,6 +524,7 @@ public class Map {
   void spawnTrees() {
     MapNode current = nodeMap[mapPosY][mapPosX];
     for (int i = 0; i < height; i+=unitLength*2) {
+      if (current==null) System.out.println("FUCK");
       if (!(current.hasEntryPoint[0] && i >= current.entryPoints[0] && i <= current.entryPoints[1])) {
         image(scene.backgroundImages[2], 0, i);
       }
@@ -536,9 +548,9 @@ public class Map {
 
   //FIX this function.
   void moveNPC() { 
-    for(NPC n: scene.npcList){
-      if(n.isInStory && n.movement.equals("moving")){
-         shiftNPC(n, n.mapPosY, n.mapPosX);
+    for (NPC n : scene.npcList) {
+      if (n.isInStory && n.movement.equals("moving")) {
+        shiftNPC(n, n.mapPosY, n.mapPosX);
       }
     }
   }
@@ -593,6 +605,15 @@ public class Map {
         System.out.println("Item addition Unsuccessful");
       } else {
         System.out.println("Item addition successful");
+      }
+    }
+  }
+  void nextEventPath() {
+    if (isPathWayConstructed) {
+      if (mapPosX ==endMapPosX && mapPosY == endMapPosY) {
+        if (playerPosition.y/30 == 18) {
+          isCompleted = true;
+        }
       }
     }
   }

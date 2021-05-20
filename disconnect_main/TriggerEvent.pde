@@ -5,6 +5,7 @@ public class TriggerEvent{
   boolean isTransition; //Converting between battle and RPG
   String name; //Person who sent the message.
   int coins;
+  boolean isSceneFinished;
   //Item 
   //Stat changes 
   //Any upgrades? 

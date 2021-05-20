@@ -65,7 +65,8 @@
             "npc":{
                 "storyCharacters":[],
                 "sideCharacters":[]
-            }
+            },
+            "endOfScene":-1
         },
         {
             "sceneID": 1,
@@ -312,9 +313,254 @@
                     }
                 ]    
             },
-            "sceneFSM":{
+            "endOfScene":2
+        },{
+            "sceneID": 2,
+            "title": "Chapter 2",
+            "subtitleTop":"Eheu fugaces labuntur anni",
+            "subtitleBottom":"明日は明日の風が吹く",
+            "event":[
 
-            }
+            ],
+            "map":{
+                "difficulty":1,
+                "floor":{
+                    "id":0
+                },
+                "objects":[{
+                    "id":0,
+                    "width":1,
+                    "height":1,
+                    "isWalkable":true,
+                    "isInteractable":false
+                },
+                    {
+                    "id":1,
+                    "width":3,
+                    "height":3,
+                    "isWalkable":false,
+                    "isInteractable":false
+                },
+                 {
+                     "id":2,
+                     "width":2,
+                     "height":2,
+                     "isWalkable":false,
+                     "isInteractable":false
+                },
+                {
+                    "id":3,
+                    "width":1,
+                    "height":1,
+                    "isWalkable":true,
+                    "isInteractable":false
+                },
+                {
+                    "id":4,
+                    "width":1,
+                    "height":1,
+                    "isWalkable":true,
+                    "isInteractable":false
+                },
+                {
+                    "id":5,
+                    "width":1,
+                    "height":1,
+                    "isWalkable":false,
+                    "isInteractable":true
+                },{
+                    "id":6,
+                    "width":1,
+                    "height":1,
+                    "isWalkable":false,
+                    "isInteractable":false
+                }
+            ]
+            },
+            "npc":{
+                "storyCharacters":[
+                    {
+                        "name":"Monk Ji Gong",
+                        "position":"end",
+                        "event":[{
+                            "eventID":0,
+                            "triggerID":0,
+                            "text":["zzz..."]
+                        },
+                            {
+                            "eventID":1,
+                            "triggerID":0,
+                            "text":[
+                                "... ... Ah.",
+                                "Seems that liquor hit me hard earlier haha. Phew...",
+                                "You have some courage there young man. ",
+                                "Or maybe, foolishness?",
+                                "...",
+                                "Not one to talk? That’s alright. I’d offer you a drink, but I know you’re not in the mood.",
+                                "Unfortunately, I can’t let you pass through to the next town without special permission.",
+                                "BUT",
+                                "You know what, I'll let you pass through, but only if you're willing to spar with me.",
+                                "I haven't been keeping up with my training lately, and really need some motivation.",
+                                "I can already see the look in your eyes to know that you'll do whatever it takes to get through me.",
+                                "Get ready!!!"
+                            ]
+                        },
+                        {
+                            "eventID":1,
+                            "triggerID":1,
+                            "text":[
+                                "Your determination will bear fruit.",
+                                "Unless you're dead!"
+                            ]
+                        },
+                        {
+                            "eventID":2,
+                            "triggerID":0,
+                            "text":[
+                                "Well shit.."
+                            ]
+                        }
+                    ],
+                    "conditions":[],
+                    "endOfEvent":[
+                        
+                    ],
+                    "battleTrigger":{
+                        "eventID":1
+                    },
+                    "movement":"idle"
+                    },
+                    {
+                        "name":"Jack Lee Son",
+                        "position":"start",
+                        "event":[{
+                            "eventID":0,
+                            "triggerID":0,
+                            "text":[
+                                "Yikes, did you fall on your way here?",
+                                "Never mind don't answer that.",
+                                "I already can tell by your face you've had a long day.",
+                                "Or maybe, foolishness?",
+                                "I can tell you just came across this place.",
+                                "Boy do I have some news for you!",
+                                "YOU CAN'T LEAVE THIS PLACE",
+                                "...",
+                                "...",
+                                "I was expecting more of a reaction ._.",
+                                "No. Seriously you actually can't leave, I've tried many times already.",
+                                "Exit is at the end of town, guarded by Monk Ji Gong.",
+                                "The man won't budge!",
+                                "That hotel you just came from, the man who took you there was going to have you work as a slave for the rest of your life!",
+                                "This is probably a lot for you to unpack right now",
+                                "I tell you what, I'll give you some advice right now.",
+                                "The panic of being stuck here is not worth it dude.",
+                                "You just got to go with the flow and enjoy your time here until whatever happens next.",
+                                "A lot of the people here seem to be talking nonsense, you’ll see what I mean.",
+                                "I actually know a way to defeat the monk. But I won’t tell you until you do me a favour.",
+                                "And just so you know, the exit out of town won't actually appear until you defeat Monk Ji Gong",
+                                "Trust me fella, there are so many things I cannot explain about this town.",
+                                "Let us just do each other a favour will ya?",
+                                "I managed to drop a couple of items on my way here. And I'm not really the keen eye type.",
+                                "I just need you to help me recover some items and then I’ll give you the keys to freedom.",
+                                "I dropped my sunglasses, my lovely top hat, and my precious scarf.",
+                                "Don't judge, they are very sentimental to me.",
+                                "And don't worry! No one else has anything besides a shirt and jeans on inthis town for some odd reason.",
+                                "One of the many things I cannot explain in this town haha",
+                                "My items will stick out like a horse in a haystack!",
+                                "Ill be jogging around town, so come find me once you find al three items!"
+                            ]
+                        },
+                            {
+                            "eventID":0,
+                            "triggerID":1,
+                            "text":["Shoo!",
+                                    "Get my items will you?"]
+                        },
+                        {
+                            "eventID":1,
+                            "triggerID":0,
+                            "text":["Fantastic!!!"]
+                        },
+                        {
+                            "eventID":1,
+                            "triggerID":1,
+                            "text":["Goodluck my dude."]
+                        },
+                        {
+                            "eventID":2,
+                            "triggerID":0,
+                            "text":["Wow you managed to beat Ji Gong.",
+                            "I took notes on how you dodged those energy balls.",
+                            "I'll be coming right behind you! HAHA"]
+                        }
+                    ],"conditions":[{
+                        "conditionID":0,
+                        "eventID":0,
+                        "triggerID":1,
+                        "condition":"itemFind",
+                        "itemList":[
+                            {
+                                "id":0,
+                                "imageID":1,
+                                "text":"A \"Lovely Scarf\""
+                            },
+                            {
+                                "id":1, 
+                                "imageID":1,
+
+                                "text":"A \"Top Hat\"?"
+                            },{
+                                "id":2,
+                                "imageID":1,
+
+                                "text":"A pair of \"wishiwashi sunglasses\""
+                            }
+                        ]
+                        
+                    }],
+                    "endOfEvent":[
+                        0
+                    ],
+                    "battleTrigger":{
+                        "eventID":-1
+                    },
+                    "movement":"moving"
+                    }
+                ],
+                "sideCharacters":[
+                    {
+                        "name":"Stranger",
+                        "text":["I can't really remember how I got here. As the old saying goes..."]
+                    },
+                    {
+                        "name":"Stranger",
+                        "text":["I've lost my dog at the park earlier today, can you help me find her?"]
+                    },
+                    {
+                        "name":"Stranger",
+                        "text":["..."]
+                    },
+                    {
+                        "name":"Stranger",
+                        "text":["Get 10 for the price of 5 chop-chop! Sales going down fast!"]
+                    },
+                    {
+                        "name":"Stranger",
+                        "text":["I think I'll put some more stocks in this firm because..."]
+                    },
+                    {
+                        "name":"Stranger",
+                        "text":["Leave me alone, I need to practice.",
+                                "My boss is going to freak if I mess this presentation up."]
+                    },
+                    {
+                        "name":"Stranger",
+                        "text":["I can't really think of anything, let alone say anything meaningful."]
+                    }
+                ]    
+            },
+            "endOfScene":2
         }
+
     ]
 }

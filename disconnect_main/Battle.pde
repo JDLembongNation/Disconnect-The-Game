@@ -15,17 +15,19 @@ public class Battle {
   }
 
   void run() {
-    if (!enemy.isEnemyDead() && !player.isPlayerDead()) {
-      update();  
-      enemy.run(bs);
-      player.run(bs);
-      bs.run(player, enemy, 5, 10);
-    } else {
-      stroke(0);
-      //return to RPG with appropriate sol.
-      isBattleActive = false;
-      if(player.isPlayerDead()) isPlayerDead = true;
-      else isEnemyDead = true;
+    if (!gamePaused) {
+      if (!enemy.isEnemyDead() && !player.isPlayerDead()) {
+        update();  
+        enemy.run(bs);
+        player.run(bs);
+        bs.run(player, enemy, 5, 10);
+      } else {
+        stroke(0);
+        //return to RPG with appropriate sol.
+        isBattleActive = false;
+        if (player.isPlayerDead()) isPlayerDead = true;
+        else isEnemyDead = true;
+      }
     }
   }
 
@@ -35,7 +37,7 @@ public class Battle {
     fill(255);
     rect(enemy.position.x-10, enemy.position.y-10, 20, 20);
     rect(player.position.x-5, player.position.y-5, 10, 10);
-    hud();   
+    hud();
   }
 
   void hud() {
@@ -51,5 +53,4 @@ public class Battle {
     fill(255);
     rect(20, 10, enemy.health * 3, 10);
   }
-
 }

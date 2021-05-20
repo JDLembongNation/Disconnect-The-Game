@@ -1,4 +1,4 @@
-PFont font;
+PFont font; //<>//
 RPG rpg;
 int scene;
 PImage openingBG;
@@ -10,6 +10,8 @@ PImage mainCharacter[];
 PImage battleImages[];
 PImage startButton;
 PImage controlButton;
+PImage returnButton;
+PImage quitButton;
 float timers[];
 int iterators[];
 boolean keys[];
@@ -51,6 +53,8 @@ void setup() {
   battleImages[0] = loadImage("./data/battle/bg-1.png");
   startButton = loadImage("./data/opening-bg/main-menu/start.png");
   controlButton = loadImage("./data/opening-bg/main-menu/controls.png");
+  returnButton = loadImage("./data/opening-bg/main-menu/return.png");
+  quitButton = loadImage("./data/opening-bg/main-menu/quit.png");
   timers = new float[24];
   iterators = new int[16];
   scene = 0;
@@ -60,64 +64,63 @@ void setup() {
 
 void draw() {  
   background(0);
-  /*
+
   if (!titleScreenActive) {
-   if (!gamePaused) {
-   if (!rpg.isSceneFinished) {
-   rpg.execScene(1); //scene
-   } else {
-   scene++;
-   rpg.isSceneFinished=false;
-   }
-   }else{
-   showPausedMenu();
-   }
-   } else {
-   titleScreen();
-   }
-   */
-  battle.run();
+    if (!rpg.isSceneFinished) {
+      rpg.execScene(scene); //scene
+      if (gamePaused) showPausedMenu();
+    } else {
+      scene++;
+      rpg.isSceneFinished=false;
+    }
+  } else {
+    titleScreen();
+  }
 }
 
 private void showPausedMenu() {
   fill(0, 150);
   rect(0, 0, 600, 600);
   fill(255);
-  textSize(80);
-  text("Paused", 100, 100);
-  rect(200, 200, 170, 60);
-  rect(200, 300, 170, 60);
-  rect(200, 400, 170, 60);
+  textFont(font);
+    textSize(130);
+  text("Paused", 150, 100);
+  image(returnButton, 200, 200);
+  image(quitButton, 200, 300);
 }
 
 void keyPressed() {
-  if (rpg.isRPGActive) {
-    if (key == ' ') {
-      rpg.showNextText = true;
-      //Does a relatively good job, but may need time stops.
-    }
-    if (key == 'm') keys[4] = true;
-  }
-  if (battle.isBattleActive) if (key == ' ') keys[5] = true;
-  if (keyCode == LEFT) keys[0] = true;
-  if (keyCode == UP) keys[1] = true;
-  if (keyCode == RIGHT) keys[2] = true;
-  if (keyCode == DOWN) keys[3] = true;
   if (key=='p' && timers[22] < millis()) {
     gamePaused=!gamePaused;
     timers[22] =millis()+100;
   }
+  if (!gamePaused) {
+    if (rpg.isRPGActive) {
+      if (key == ' ') {
+        rpg.showNextText = true;
+        //Does a relatively good job, but may need time stops.
+      }
+      if (key == 'm') keys[4] = true;
+    }
+    if (battle.isBattleActive) if (key == ' ') keys[5] = true;
+    if (keyCode == LEFT) keys[0] = true;
+    if (keyCode == UP) keys[1] = true;
+    if (keyCode == RIGHT) keys[2] = true;
+    if (keyCode == DOWN) keys[3] = true;
+  }
 }
 
 void keyReleased() {
-  if (rpg.isRPGActive) {
-    if (key == 'm') keys[4] = false;
+  if (!gamePaused) {
+    if (rpg.isRPGActive) {
+      if (key == 'm') keys[4] = false;
+    }
+    if (keyCode == LEFT) keys[0] = false;
+    if (keyCode == UP) keys[1] = false;
+    if (keyCode == RIGHT) keys[2] = false;
+    if (keyCode == DOWN) keys[3] = false;
+    if (battle.isBattleActive) if (key == ' ') keys[5] = false;
   }
-  if (keyCode == LEFT) keys[0] = false;
-  if (keyCode == UP) keys[1] = false;
-  if (keyCode == RIGHT) keys[2] = false;
-  if (keyCode == DOWN) keys[3] = false;
-  if (battle.isBattleActive) if (key == ' ') keys[5] = false;
 }
 
 void titleScreen() {
@@ -175,8 +178,11 @@ void titleScreen() {
 }
 void mousePressed() {
   if (gamePaused) {
+    if (mouseInRegion(200, 200, 170, 60)) {
+      gamePaused = false;
+    }
     if (mouseInRegion(200, 300, 170, 60)) {
-      
+      exit();
     }
   } else {
     if (titleScreenActive) {
